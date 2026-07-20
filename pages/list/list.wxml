@@ -21,6 +21,7 @@
   </checkbox-group>
 
   <view class="hint" wx:if="{{error}}">{{error}}</view>
+  <view class="hint" wx:elif="{{selectedIds.length >= 3}}">已选满 3 个；取消某一项后才能再选其他</view>
 
-  <button class="btn-primary" bindtap="onCompare">生成对照表</button>
+  <button class="btn-primary" bindtap="onCompare" disabled="{{!clubs.length}}">生成对照表</button>
 </view>

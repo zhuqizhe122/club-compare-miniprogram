@@ -13,13 +13,24 @@ Page({
     this.applySelection(selected)
   },
 
-  applySelection(selectedIds) {
+  applySelection(selectedIds, error) {
+    const all = getAllClubs()
+    if (!all.length) {
+      getApp().globalData.selectedClubIds = []
+      this.setData({
+        clubs: [],
+        selectedIds: [],
+        error: '暂无可用社团，无法开始比较',
+      })
+      return
+    }
+
     const capped = selectedIds.slice(0, 3)
     const selectedSet = {}
     capped.forEach((id) => {
       selectedSet[id] = true
     })
-    const clubs = getAllClubs().map((c) => ({
+    const clubs = all.map((c) => ({
       ...c,
       checked: !!selectedSet[c.id],
     }))
@@ -27,23 +38,26 @@ Page({
     this.setData({
       clubs,
       selectedIds: capped,
-      error: '',
+      error: error || '',
     })
   },
 
   onCheckChange(e) {
     let values = e.detail.value || []
+    let error = ''
     if (values.length > 3) {
       values = values.slice(0, 3)
-      this.setData({ error: '最多选择 3 个社团' })
-    } else {
-      this.setData({ error: '' })
+      error = '最多选择 3 个社团；请先取消已选再换其他'
     }
-    this.applySelection(values)
+    this.applySelection(values, error)
   },
 
   onCompare() {
-    const { selectedIds } = this.data
+    const { selectedIds, clubs } = this.data
+    if (!clubs.length) {
+      this.setData({ error: '暂无可用社团，无法开始比较' })
+      return
+    }
     if (selectedIds.length < 2) {
       this.setData({ error: '请至少选择 2 个社团再比较' })
       return
