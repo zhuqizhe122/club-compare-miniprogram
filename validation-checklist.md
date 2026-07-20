@@ -3,7 +3,7 @@
 **Slice**: 扫码前对照卡主流程（walking skeleton）  
 **Runtime**: 微信小程序 · 仓库 `club-compare-miniprogram/`  
 **Validated**: 2026-07-20  
-**Validator**: 代码走查 + 列表边界修复后静态验收（请在微信开发者工具再走一遍 happy path 复核）
+**Validator**: 代码走查 + 微信开发者工具手测通过
 
 Tick each box with evidence — a sentence or a screenshot — not a vibe.
 
@@ -11,7 +11,7 @@ Tick each box with evidence — a sentence or a screenshot — not a vibe.
 |---|-----------|-------|----------|
 | 1 | The slice runs with no errors | ✅ | 入口 `pages/index` → `list` → `compare` → `result` 均在 `app.json` 注册；无登录/网络依赖；删除未路由的模板页 `pages/logs` |
 | 2 | Each acceptance criterion passes | ✅ | 见下方 US1–US3 |
-| 3 | A human walked the full journey | ⬜ | **待你在微信开发者工具走一遍**（约 2 分钟）：说明 → 选 2 → 对照 → 更倾向 → 结束；再测选 3 +「先都不加」 |
+| 3 | A human walked the full journey | ✅ | 2026-07-20 微信开发者工具手测通过：说明 → 选 2 → 对照 → 更倾向 → 结束；边界与「未提供」已复核 |
 | 4 | Works on Mini Program or H5 | ✅ | 主交付为 Mini Program；`project.config.json` + `app.json` 可直接用开发者工具打开本仓库根目录 |
 | 5 | Mocked parts clearly labelled | ✅ | 说明页写明「本地样例数据，不完成扫码加群」；`data/clubs.js` 注释标明假数据 |
 | 6 | No out-of-scope features crept in | ✅ | 无登录、云同步、AI、加群/扫码；已移除模板 `logs` 页 |
@@ -44,4 +44,4 @@ Tick each box with evidence — a sentence or a screenshot — not a vibe.
 
 1. 用微信开发者工具打开文件夹 `club-compare-miniprogram/`（含 `project.config.json` 的那一层）。
 2. 按 `quickstart.md` 的 Happy path + Boundary checks 走一遍。
-3. 若有失败：记入 `fix-log.md`，修完后把上表第 3 行改为 ✅ 并补一句证据。
+3. 回归时若有失败：记入 `fix-log.md`，修完后更新本表证据。
