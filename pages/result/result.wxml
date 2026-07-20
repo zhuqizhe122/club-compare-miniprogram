@@ -1,0 +1,29 @@
+<view class="page">
+  <view class="title">你的倾向</view>
+  <view class="lead" wx:if="{{!confirmed}}">看完对照后，标记更倾向的社团，或先都不加。</view>
+
+  <block wx:if="{{!confirmed}}">
+    <radio-group bindchange="onTendencyChange">
+      <label class="option" wx:for="{{options}}" wx:key="value">
+        <radio value="{{item.value}}" checked="{{tendency === item.value}}" />
+        <text>{{item.label}}</text>
+      </label>
+    </radio-group>
+    <view class="hint" wx:if="{{error}}">{{error}}</view>
+    <button class="btn-primary" bindtap="onConfirm">确认选择</button>
+  </block>
+
+  <block wx:else>
+    <view class="confirm-box">
+      <view class="confirm-text">{{confirmText}}</view>
+    </view>
+    <view class="exit-box">
+      <view class="exit-title">下一步在真实渠道完成</view>
+      <view class="exit-body">
+        请带着刚才的判断，再去摊位扫码或加入真实群聊。
+        本原型不提供扫码、加群或报名功能。
+      </view>
+    </view>
+    <button class="btn-secondary" bindtap="onRestart">重新比较</button>
+  </block>
+</view>

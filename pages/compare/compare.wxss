@@ -1,0 +1,49 @@
+.table-scroll {
+  width: 100%;
+  margin-top: 16rpx;
+  white-space: nowrap;
+}
+
+.table {
+  display: inline-block;
+  min-width: 100%;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8rpx;
+}
+
+.row {
+  display: flex;
+  border-bottom: 1px solid #eee;
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.row.header {
+  background: #f0f0f0;
+  font-weight: 600;
+}
+
+.cell {
+  flex: 1;
+  min-width: 160rpx;
+  padding: 20rpx 16rpx;
+  white-space: normal;
+  word-break: break-word;
+  font-size: 24rpx;
+  border-right: 1px solid #eee;
+  box-sizing: border-box;
+}
+
+.cell:last-child {
+  border-right: none;
+}
+
+.cell.label {
+  flex: 0 0 180rpx;
+  min-width: 180rpx;
+  color: #444;
+  background: #fafafa;
+}
