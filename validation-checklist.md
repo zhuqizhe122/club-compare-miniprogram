@@ -43,5 +43,5 @@ Tick each box with evidence — a sentence or a screenshot — not a vibe.
 ## How to re-run (DevTools)
 
 1. 用微信开发者工具打开文件夹 `club-compare-miniprogram/`（含 `project.config.json` 的那一层）。
-2. 按 `quickstart.md` 的 Happy path + Boundary checks 走一遍。
+2. 按 `specs/001-club-compare-flow/quickstart.md` 的主路径和边界回归走一遍。
 3. 回归时若有失败：记入 `fix-log.md`，修完后更新本表证据。

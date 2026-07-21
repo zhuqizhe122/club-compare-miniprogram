@@ -18,12 +18,13 @@ Local-first WeChat Mini Program prototype: **加入前先比一比** — let a f
 
 ## Spec & plan locations
 
-- In-repo Session 5 trail: `validation-checklist.md`, `fix-log.md`, `README.md`
-- Course workspace (sibling folder, may not be in this git remote):  
-  `../project/master-plan.md`  
-  `../project/specs/001-club-compare-flow/` (spec, plan, tasks, remaining-backlog)
+- Project direction: `master-plan.md`
+- Current flow: `specs/001-club-compare-flow/` (spec, plan, tasks, remaining-backlog, quickstart)
+- Data interface: `docs/data-contract.md`
+- Validation trail: `validation-checklist.md`, `fix-log.md`
+- Collaboration templates: `docs/issue-template.md`, `docs/pr-template.md`
 
-Before behavioural changes, read the relevant spec (or this file’s Non-goals + Flow) and the remaining backlog.
+Before behavioural changes, read the relevant in-repo spec and remaining backlog. Before data-model changes, read and update the data contract.
 
 ## Flow (do not invent extra screens)
 
