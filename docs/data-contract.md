@@ -52,8 +52,26 @@
 
 - `selectedClubIds: string[]`：当前候选社团 ID；页面规则要求 2–3 个后才能比较。
 - `tendency: 'club:<id>' | 'none' | null`：当前倾向。
+- `quizRecommendations: QuizRecommendation[]`：当前测试生成的 3 个候选结果；仅在会话中使用。
 
-两者只存在当前小程序会话，不承诺持久化或跨设备同步。
+以上状态只存在当前小程序会话，不承诺持久化或跨设备同步。
+
+## 倾向测试数据
+
+`data/quiz.js` 维护：
+
+- 8 道单选题；每题 ID 和题内选项 ID 必须唯一。
+- 第 1 题的兴趣领域值，以及其余题目的 1–3 级偏好值。
+- 以社团 ID 为 key 的兴趣领域映射；必须完整覆盖 `data/clubs.js` 的 98 个 ID。
+
+`QuizRecommendation` 包含：
+
+- `clubId`：与 `club.id` 相同的稳定列表 key。
+- `club`：来自 `data/clubs.js` 的原始社团对象。
+- `score`：固定规则产生的内部排序分数。
+- `reasons: string[]`：由命中的兴趣领域和接近的偏好维度生成的说明。
+
+评分不得随机，也不得生成社团数据中不存在的事实。
 
 ## 变更协议
 

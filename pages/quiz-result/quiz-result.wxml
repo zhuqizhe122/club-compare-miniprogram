@@ -1,0 +1,17 @@
+<view class="page">
+  <view class="title">适合你优先了解的社团</view>
+  <view class="lead">根据你的活动偏好，建议先比较下面 3 个候选。</view>
+
+  <view class="recommend-card" wx:for="{{recommendations}}" wx:key="clubId">
+    <view class="recommend-rank">推荐 {{index + 1}}</view>
+    <view class="recommend-name">{{item.club.name}}</view>
+    <view class="recommend-tagline">{{item.club.tagline}}</view>
+    <view class="reason-title">匹配理由</view>
+    <view class="reason" wx:for="{{item.reasons}}" wx:for-item="reason" wx:key="*this">· {{reason}}</view>
+    <view class="club-meta">{{item.club.weeklyHours}} · {{item.club.vibe}}</view>
+  </view>
+
+  <view class="hint result-note">测试结果仅供参考。</view>
+  <button class="btn-primary" bindtap="onCompare">把这 3 个放入对照表</button>
+  <button class="btn-secondary" bindtap="onRetake">重新测试</button>
+</view>

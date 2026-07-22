@@ -2,8 +2,8 @@
 
 **Slice**: 扫码前对照卡主流程（walking skeleton）  
 **Runtime**: 微信小程序 · 仓库 `club-compare-miniprogram/`  
-**Validated**: 2026-07-20  
-**Validator**: 代码走查 + 微信开发者工具手测通过
+**Validated**: 2026-07-22
+**Validator**: 代码走查 + 微信开发者工具手测通过（用户反馈）
 
 **Data refresh checked**: 2026-07-21 · 98 条本地社团数据静态校验通过，开发者工具抽查待人工执行
 
@@ -11,11 +11,11 @@ Tick each box with evidence — a sentence or a screenshot — not a vibe.
 
 | # | Criterion | Pass? | Evidence |
 |---|-----------|-------|----------|
-| 1 | The slice runs with no errors | ✅ | 入口 `pages/index` → `list` → `compare` → `result` 均在 `app.json` 注册；无登录/网络依赖；删除未路由的模板页 `pages/logs` |
+| 1 | The slice runs with no errors | ✅ | 2026-07-22 微信开发者工具测试通过：直接比较和倾向测试均可完成 |
 | 2 | Each acceptance criterion passes | ✅ | 见下方 US1–US3 |
-| 3 | A human walked the full journey | ✅ | 2026-07-20 微信开发者工具手测通过：说明 → 选 2 → 对照 → 更倾向 → 结束；边界与「未提供」已复核 |
+| 3 | A human walked the full journey | ✅ | 2026-07-20 直接比较流程通过；2026-07-22 倾向测试 → 推荐 3 个 → 对照 → 结果流程通过 |
 | 4 | Works on Mini Program or H5 | ✅ | 主交付为 Mini Program；`project.config.json` + `app.json` 可直接用开发者工具打开本仓库根目录 |
-| 5 | Mocked parts clearly labelled | ✅ | 说明页写明「本地样例数据，不完成扫码加群」；`data/clubs.js` 顶部声明介绍、投入、频率、职责和氛围均为非官方模拟信息 |
+| 5 | Demo boundary clearly labelled | ✅ | 微信开发者工具确认首页显示「演示原型，社团实际信息以现场介绍为准」，结果页显示「测试结果仅供参考」 |
 | 6 | No out-of-scope features crept in | ✅ | 无登录、云同步、AI、加群/扫码；已移除模板 `logs` 页 |
 | 7 | Code review reports no blocking issues | ✅ | 发现并修复：选满 3 个时提示被 `applySelection` 清空（见 Fix Log #1） |
 
