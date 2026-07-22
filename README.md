@@ -1,7 +1,7 @@
 # club-compare-miniprogram
 
 Session 5 walking skeleton：**加入前先比一比**（本地样例社团对照卡）。  
-Session 6 harness：见根目录 `AGENTS.md`（规则、非目标、spec-update protocol、Git 习惯）。
+协作基线：见根目录 `AGENTS.md`（规则、非目标、spec-update protocol、Git 习惯）。
 
 ## Open in WeChat DevTools
 
@@ -12,10 +12,13 @@ Session 6 harness：见根目录 `AGENTS.md`（规则、非目标、spec-update 
 
 `pages/index`（说明）→ `list`（勾选 2–3）→ `compare`（四维对照）→ `result`（倾向 + 结束提示）
 
-## Spec trail (Session 5)
+## Project context
 
-- 本仓库：`validation-checklist.md` · `fix-log.md`
-- 课程工作区（若在同级 `小学期/` 下）：`../project/specs/001-club-compare-flow/`、`../project/master-plan.md`
+- 项目方向：`master-plan.md`
+- 当前流程规格与验证步骤：`specs/001-club-compare-flow/`
+- 社团数据契约：`docs/data-contract.md`
+- 协作模板：`docs/issue-template.md` · `docs/pr-template.md`
+- 验证记录：`validation-checklist.md` · `fix-log.md`
 
 ## Non-goals
 

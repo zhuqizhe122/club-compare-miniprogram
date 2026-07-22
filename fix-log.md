@@ -9,5 +9,5 @@ Session 5 trail: every failure recorded. Spec change? only when intended behavio
 
 ## Notes
 
-- 首轮静态验收未发现主路径崩溃类缺陷；US1–US3 行为与 `spec.md` 一致。
+- 首轮静态验收未发现主路径崩溃类缺陷；US1–US3 行为与 `specs/001-club-compare-flow/spec.md` 一致。
 - 若开发者工具手测再发现问题，在本表追加行后再改代码。
