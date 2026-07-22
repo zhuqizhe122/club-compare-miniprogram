@@ -20,15 +20,18 @@ Local-first WeChat Mini Program prototype: **加入前先比一比** — let a f
 
 - Project direction: `master-plan.md`
 - Current flow: `specs/001-club-compare-flow/` (spec, plan, tasks, remaining-backlog, quickstart)
+- Club-fit quiz: `specs/002-club-fit-quiz/` (spec, plan, tasks, quickstart, validation)
 - Data interface: `docs/data-contract.md`
 - Validation trail: `validation-checklist.md`, `fix-log.md`
 - Collaboration templates: `docs/issue-template.md`, `docs/pr-template.md`
 
 Before behavioural changes, read the relevant in-repo spec and remaining backlog. Before data-model changes, read and update the data contract.
 
-## Flow (do not invent extra screens)
+## Approved flows (do not invent extra screens)
 
 `pages/index` → `pages/list` → `pages/compare` → `pages/result`
+
+`pages/index` → `pages/quiz` → `pages/quiz-result` → `pages/compare` → `pages/result`
 
 ## Non-goals (do not add unless an ADR / master-plan update approves)
 

@@ -11,11 +11,11 @@ Tick each box with evidence — a sentence or a screenshot — not a vibe.
 
 | # | Criterion | Pass? | Evidence |
 |---|-----------|-------|----------|
-| 1 | The slice runs with no errors | ✅ | 入口 `pages/index` → `list` → `compare` → `result` 均在 `app.json` 注册；无登录/网络依赖；删除未路由的模板页 `pages/logs` |
+| 1 | The slice runs with no errors | ⏳ | 直接比较和倾向测试页面均在 `app.json` 注册；新增页面仍需微信开发者工具人工验证 |
 | 2 | Each acceptance criterion passes | ✅ | 见下方 US1–US3 |
 | 3 | A human walked the full journey | ✅ | 2026-07-20 微信开发者工具手测通过：说明 → 选 2 → 对照 → 更倾向 → 结束；边界与「未提供」已复核 |
 | 4 | Works on Mini Program or H5 | ✅ | 主交付为 Mini Program；`project.config.json` + `app.json` 可直接用开发者工具打开本仓库根目录 |
-| 5 | Mocked parts clearly labelled | ✅ | 说明页写明「本地样例数据，不完成扫码加群」；`data/clubs.js` 顶部声明介绍、投入、频率、职责和氛围均为非官方模拟信息 |
+| 5 | Demo boundary clearly labelled | ⏳ | 首页拟显示「演示原型，社团实际信息以现场介绍为准」；需在微信开发者工具中复核新文案 |
 | 6 | No out-of-scope features crept in | ✅ | 无登录、云同步、AI、加群/扫码；已移除模板 `logs` 页 |
 | 7 | Code review reports no blocking issues | ✅ | 发现并修复：选满 3 个时提示被 `applySelection` 清空（见 Fix Log #1） |
 

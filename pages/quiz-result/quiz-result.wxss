@@ -1,0 +1,49 @@
+.recommend-card {
+  padding: 28rpx;
+  margin-top: 20rpx;
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 14rpx;
+}
+
+.recommend-rank {
+  color: #777;
+  font-size: 23rpx;
+}
+
+.recommend-name {
+  margin-top: 6rpx;
+  font-size: 34rpx;
+  font-weight: 600;
+}
+
+.recommend-tagline {
+  margin-top: 8rpx;
+  color: #555;
+  font-size: 25rpx;
+  line-height: 1.5;
+}
+
+.reason-title {
+  margin-top: 20rpx;
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.reason {
+  margin-top: 6rpx;
+  color: #333;
+  font-size: 24rpx;
+}
+
+.club-meta {
+  padding-top: 18rpx;
+  margin-top: 18rpx;
+  color: #666;
+  font-size: 23rpx;
+  border-top: 1px solid #eee;
+}
+
+.result-note {
+  margin-top: 24rpx;
+}

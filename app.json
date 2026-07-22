@@ -2,6 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/list/list",
+    "pages/quiz/quiz",
+    "pages/quiz-result/quiz-result",
     "pages/compare/compare",
     "pages/result/result"
   ],
