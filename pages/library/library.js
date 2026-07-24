@@ -1,4 +1,4 @@
-const { getAllClubs, getClubsByIds } = require('../../data/clubs.js')
+const { getClubsByIds, searchClubs } = require('../../data/clubs.js')
 const session = require('../../store/session.js')
 
 const PAGE_SIZE = 12
@@ -18,6 +18,24 @@ const INTENSITIES = [
   { value: 'medium', label: '适中投入' },
   { value: 'high', label: '较高投入' },
 ]
+const TIME_BANDS = [
+  { value: '', label: '不限时段' },
+  { value: 'weekday-evening', label: '工作日晚间' },
+  { value: 'weekend', label: '周末为主' },
+  { value: 'flexible', label: '时间灵活' },
+]
+const SOCIAL_STYLES = [
+  { value: '', label: '不限互动' },
+  { value: 'quiet', label: '安静专注' },
+  { value: 'collaborative', label: '团队协作' },
+  { value: 'expressive', label: '表达互动' },
+]
+const COMMITMENTS = [
+  { value: '', label: '不限节奏' },
+  { value: 'casual', label: '灵活参与' },
+  { value: 'regular', label: '稳定出席' },
+  { value: 'project', label: '项目期加码' },
+]
 const MODES = [
   { value: '', label: '不限形式' },
   { value: 'discussion', label: '讨论交流' },
@@ -32,28 +50,64 @@ const BARRIERS = [
   { value: 'beginner', label: '零基础可尝试' },
   { value: 'guided', label: '建议指导入门' },
 ]
+const EVIDENCE_GRADES = [
+  { value: '', label: '不限证据' },
+  { value: 'A', label: 'A 级' },
+  { value: 'B', label: 'B 级' },
+  { value: 'C', label: 'C 级' },
+  { value: 'D', label: 'D 级原型推断' },
+  { value: 'U', label: 'U 未知' },
+]
 
 function hasMode(club, mode) {
   return !mode || (club.decisionProfile.activityModes || []).indexOf(mode) !== -1
 }
 
+function hasEvidenceGrade(club, grade) {
+  if (!grade) return true
+  return Object.keys(club.evidence || {}).some((fieldPath) => (
+    (club.evidence[fieldPath] || []).some((record) => record.grade === grade)
+  ))
+}
+
 Page({
   data: {
     categories: CATEGORIES,
+    timeBands: TIME_BANDS,
     intensities: INTENSITIES,
+    socialStyles: SOCIAL_STYLES,
+    commitments: COMMITMENTS,
     modes: MODES,
     barriers: BARRIERS,
+    evidenceGrades: EVIDENCE_GRADES,
     category: '',
+    timeBand: '',
     intensity: '',
+    socialStyle: '',
+    commitment: '',
     activityMode: '',
     skillBarrier: '',
+    evidenceGrade: '',
     keyword: '',
     advancedOpen: false,
+    libraryTitle: '浏览全部社团',
+    entryHint: '可以搜索名称或使用条件逐步缩小范围。',
+    activeConditionCount: 0,
     visibleClubs: [],
     selectedClubs: [],
     total: 0,
     visibleCount: PAGE_SIZE,
     hasMore: false,
+  },
+
+  onLoad(options) {
+    if (options && options.mode === 'filter') {
+      this.setData({
+        advancedOpen: true,
+        libraryTitle: '按条件筛选社团',
+        entryHint: '多项条件需要同时满足；每个结果都可以继续查看详情。',
+      })
+    }
   },
 
   onShow() {
@@ -82,9 +136,13 @@ Page({
 
   onResetFilters() {
     this.setData({
+      timeBand: '',
       intensity: '',
+      socialStyle: '',
+      commitment: '',
       activityMode: '',
       skillBarrier: '',
+      evidenceGrade: '',
       visibleCount: PAGE_SIZE,
     })
     this.refresh()
@@ -94,25 +152,41 @@ Page({
     this.setData({
       keyword: '',
       category: '',
+      timeBand: '',
       intensity: '',
+      socialStyle: '',
+      commitment: '',
       activityMode: '',
       skillBarrier: '',
+      evidenceGrade: '',
       visibleCount: PAGE_SIZE,
     })
     this.refresh()
   },
 
   refresh() {
-    const keyword = this.data.keyword.trim().toLowerCase()
-    const filtered = getAllClubs().filter((club) => {
-      const text = [club.name, club.tagline, club.categoryLabel]
-        .concat(club.tags || [], club.searchAliases || []).join(' ').toLowerCase()
-      return (!keyword || text.indexOf(keyword) !== -1)
-        && (!this.data.category || club.category === this.data.category)
-        && (!this.data.intensity || club.intensity === this.data.intensity)
-        && (!this.data.skillBarrier || club.skillBarrier === this.data.skillBarrier)
-        && hasMode(club, this.data.activityMode)
-    })
+    const filters = {
+      category: this.data.category,
+      timeBand: this.data.timeBand,
+      intensity: this.data.intensity,
+      socialStyle: this.data.socialStyle,
+      commitment: this.data.commitment,
+      skillBarrier: this.data.skillBarrier,
+    }
+    const filtered = searchClubs(this.data.keyword, filters)
+      .filter((club) => hasMode(club, this.data.activityMode))
+      .filter((club) => hasEvidenceGrade(club, this.data.evidenceGrade))
+    const activeConditionCount = [
+      this.data.keyword.trim(),
+      this.data.category,
+      this.data.timeBand,
+      this.data.intensity,
+      this.data.socialStyle,
+      this.data.commitment,
+      this.data.activityMode,
+      this.data.skillBarrier,
+      this.data.evidenceGrade,
+    ].filter(Boolean).length
     const snapshot = session.snapshot()
     const selectedIds = snapshot.selectedClubIds
     const visibleClubs = filtered.slice(0, this.data.visibleCount).map((club) => ({
@@ -127,6 +201,7 @@ Page({
       selectedClubs: getClubsByIds(selectedIds),
       total: filtered.length,
       hasMore: visibleClubs.length < filtered.length,
+      activeConditionCount,
     })
   },
 

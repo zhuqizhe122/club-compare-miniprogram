@@ -6,4 +6,8 @@ Page({
   onLibrary() {
     wx.navigateTo({ url: '/pages/library/library' })
   },
+
+  onConditionFilter() {
+    wx.navigateTo({ url: '/pages/library/library?mode=filter' })
+  },
 })

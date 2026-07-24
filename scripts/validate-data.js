@@ -91,6 +91,18 @@ assert.deepStrictEqual(reversed.map((club) => club.id), [clubs[7].id, clubs[1].i
 assert.strictEqual(searchClubs('', {}).length, 98, '空搜索必须返回全部')
 assert.ok(searchClubs('编程', {}).length > 0, '搜索应覆盖简介文案')
 assert.ok(searchClubs('', { category: 'sports' }).every((club) => club.category === 'sports'), '分类筛选必须准确')
+const combinedFilters = {
+  timeBand: clubs[0].timeBand,
+  intensity: clubs[0].intensity,
+  socialStyle: clubs[0].socialStyle,
+  commitment: clubs[0].commitment,
+  skillBarrier: clubs[0].skillBarrier,
+}
+const combinedResults = searchClubs('', combinedFilters)
+assert.ok(combinedResults.length > 0, '组合条件必须至少命中作为夹具的社团')
+assert.ok(combinedResults.every((club) => (
+  Object.keys(combinedFilters).every((field) => club[field] === combinedFilters[field])
+)), '时段、投入、互动、节奏和门槛必须取交集')
 assert.ok(getExpectationCards([clubs[0].id]).every((card) => card.status === '待社团确认'), '预期卡必须携带确认状态')
 
 console.log('数据静态校验通过：98 社、决策字段、D 级推断证据、枚举、顺序与搜索均有效。')

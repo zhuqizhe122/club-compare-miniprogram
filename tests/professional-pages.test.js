@@ -43,6 +43,10 @@ function createContext(definition) {
 }
 
 session.reset()
+const index = createContext(loadPage('pages/index/index.js'))
+index.onConditionFilter()
+assert.ok(navigation.indexOf('/pages/library/library?mode=filter') !== -1)
+
 const assessment = createContext(loadPage('pages/assessment/assessment.js'))
 assessment.onLoad({})
 assert.strictEqual(assessment.data.question.id, 'core-interest')
@@ -60,12 +64,56 @@ assert.ok(navigation.indexOf('/pages/recommend/recommend') !== -1)
 assert.strictEqual(session.recommendations.length, 6)
 
 const library = createContext(loadPage('pages/library/library.js'))
+assert.strictEqual(library.data.advancedOpen, false, '直接浏览资料必须保持默认浏览态')
+library.onLoad({ mode: 'filter' })
+assert.strictEqual(library.data.advancedOpen, true, '条件筛选入口必须默认展开筛选器')
 library.onShow()
 assert.strictEqual(library.data.visibleClubs.length, 12, '社团库首屏只能渲染 12 项')
 assert.strictEqual(library.data.total, 98)
 assert.strictEqual(library.data.hasMore, true)
 
 const clubs = getAllClubs()
+const filterFixture = clubs[0]
+const fixtureMode = filterFixture.decisionProfile.activityModes[0]
+library.setData({
+  category: filterFixture.category,
+  timeBand: filterFixture.timeBand,
+  intensity: filterFixture.intensity,
+  socialStyle: filterFixture.socialStyle,
+  commitment: filterFixture.commitment,
+  activityMode: fixtureMode,
+  skillBarrier: filterFixture.skillBarrier,
+  evidenceGrade: 'D',
+})
+library.refresh()
+assert.ok(library.data.total > 0)
+assert.ok(library.data.visibleClubs.every((item) => (
+  item.club.category === filterFixture.category
+  && item.club.timeBand === filterFixture.timeBand
+  && item.club.intensity === filterFixture.intensity
+  && item.club.socialStyle === filterFixture.socialStyle
+  && item.club.commitment === filterFixture.commitment
+  && item.club.skillBarrier === filterFixture.skillBarrier
+  && item.club.decisionProfile.activityModes.indexOf(fixtureMode) !== -1
+)), '资料库多维条件必须取交集')
+library.onSelect({ detail: { id: filterFixture.id } })
+library.onDetail({ detail: { id: filterFixture.id } })
+assert.ok(navigation.indexOf(`/pages/club/club?id=${filterFixture.id}`) !== -1)
+assert.strictEqual(library.data.category, filterFixture.category, '进入详情不得清空筛选条件')
+const clubDetail = createContext(loadPage('pages/club/club.js'))
+clubDetail.onLoad({ id: filterFixture.id })
+clubDetail.onShow()
+assert.strictEqual(clubDetail.data.club.id, filterFixture.id)
+assert.strictEqual(clubDetail.data.selected, true, '详情页必须读取共享候选状态')
+library.onShow()
+assert.strictEqual(library.data.category, filterFixture.category, '从详情返回不得清空筛选条件')
+assert.ok(library.data.selectedClubs.some((club) => club.id === filterFixture.id), '从详情返回必须保留候选')
+library.setData({ evidenceGrade: 'A' })
+library.refresh()
+assert.strictEqual(library.data.total, 0, '当前全 D 数据选择 A 级证据时必须进入可恢复空态')
+library.onResetAll()
+assert.strictEqual(library.data.total, 98)
+
 session.setSelectedClubIds([clubs[0].id, clubs[1].id, clubs[2].id], 'library')
 const selection = createContext(loadPage('pages/selection/selection.js'))
 selection.onShow()

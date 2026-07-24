@@ -40,6 +40,11 @@
   background: linear-gradient(135deg, #087c6b, #0b4e45);
 }
 
+.filter-entry {
+  border-color: #9fcfc5;
+  background: #edf8f5;
+}
+
 .entry-kicker {
   color: var(--brand);
   font-size: 21rpx;

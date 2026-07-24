@@ -7,6 +7,13 @@
   height: 88rpx;
 }
 
+.result-meta {
+  margin: -8rpx 0 22rpx;
+  color: var(--ink-soft);
+  font-size: 23rpx;
+  line-height: 1.65;
+}
+
 .chip-scroll {
   width: 100%;
   white-space: nowrap;

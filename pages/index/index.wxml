@@ -10,6 +10,12 @@
         <view class="entry-copy">建立个人决策画像，生成 6 个有理由、也有风险提示的候选。</view>
         <view class="entry-link">开始测评 →</view>
       </view>
+      <view class="entry-card filter-entry" bindtap="onConditionFilter">
+        <view class="entry-kicker">我有明确要求</view>
+        <view class="entry-title">按条件筛选社团</view>
+        <view class="entry-copy">按方向、时段、投入、互动和参与节奏组合缩小范围，再查看详情。</view>
+        <view class="entry-link">开始筛选 →</view>
+      </view>
       <view class="entry-card" bindtap="onLibrary">
         <view class="entry-kicker">完整社团库</view>
         <view class="entry-title">直接浏览资料</view>
