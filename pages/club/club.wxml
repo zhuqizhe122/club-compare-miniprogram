@@ -1,0 +1,57 @@
+<view class="page" wx:if="{{club}}">
+  <view class="title">{{club.name}}</view>
+  <view class="cat-line" wx:if="{{categoryName}}">分类：{{categoryName}}</view>
+  <view class="lead">{{club.tagline}}</view>
+
+  <view class="block">
+    <view class="block-title">活动图片</view>
+    <block wx:if="{{hasImages}}">
+      <scroll-view scroll-x class="gallery-scroll">
+        <image
+          class="gallery-img"
+          wx:for="{{images}}"
+          wx:key="*this"
+          src="{{item}}"
+          mode="aspectFill"
+          data-src="{{item}}"
+          bindtap="onPreviewImage"
+        />
+      </scroll-view>
+    </block>
+    <view class="placeholder-row" wx:else>
+      <view class="placeholder-box">图片占位</view>
+      <view class="placeholder-box">图片占位</view>
+      <view class="placeholder-hint">暂无图片，后续可在数据中补充 images</view>
+    </view>
+  </view>
+
+  <view class="block">
+    <view class="block-title">荣誉介绍</view>
+    <block wx:if="{{hasHonors}}">
+      <view class="honor-item" wx:for="{{honors}}" wx:key="*this">· {{item}}</view>
+    </block>
+    <view class="placeholder-honor" wx:else>
+      <view class="placeholder-honor-line">荣誉介绍占位</view>
+      <view class="placeholder-hint">暂无荣誉信息，后续可在数据中补充 honors</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <block wx:for="{{fields}}" wx:key="key">
+      <view class="field">
+        <view class="field-label">{{item.label}}</view>
+        <view class="field-value missing" wx:if="{{item.missing}}">{{item.value}}</view>
+        <view class="field-value" wx:else>{{item.value}}</view>
+      </view>
+    </block>
+  </view>
+
+  <view class="hint" wx:if="{{hint}}">{{hint}}</view>
+
+  <button class="btn-primary" bindtap="onToggleBasket">{{basketLabel}}</button>
+  <button class="btn-secondary" bindtap="onCompare">去对照已选社团</button>
+</view>
+
+<view class="page" wx:else>
+  <view class="hint">{{errorText}}</view>
+</view>

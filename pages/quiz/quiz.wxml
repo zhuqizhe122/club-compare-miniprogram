@@ -1,0 +1,20 @@
+<view class="page">
+  <view class="title">匹配问卷</view>
+  <view class="lead">共 {{total}} 题，已答 {{answered}} 题。根据你的时间与偏好做规则匹配（非 AI）。</view>
+
+  <view class="q-block" wx:for="{{questions}}" wx:key="id">
+    <view class="q-title">{{index + 1}}. {{item.title}}</view>
+    <view
+      class="opt {{answers[item.id] === opt.id ? 'selected' : ''}}"
+      wx:for="{{item.options}}"
+      wx:for-item="opt"
+      wx:key="id"
+      data-qid="{{item.id}}"
+      data-oid="{{opt.id}}"
+      bindtap="onPick"
+    >{{opt.label}}</view>
+  </view>
+
+  <view class="hint" wx:if="{{error}}">{{error}}</view>
+  <button class="btn-primary" bindtap="onSubmit">查看推荐</button>
+</view>

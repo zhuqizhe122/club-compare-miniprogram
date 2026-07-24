@@ -1,0 +1,113 @@
+.card {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8rpx;
+  padding: 8rpx 24rpx;
+  margin-top: 24rpx;
+}
+
+.cat-line {
+  font-size: 24rpx;
+  color: #666;
+  margin-bottom: 8rpx;
+}
+
+.block {
+  margin-top: 24rpx;
+  padding: 20rpx;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8rpx;
+}
+
+.block-title {
+  font-weight: 600;
+  font-size: 28rpx;
+  margin-bottom: 16rpx;
+}
+
+.gallery-scroll {
+  width: 100%;
+  white-space: nowrap;
+}
+
+.gallery-img {
+  display: inline-block;
+  width: 280rpx;
+  height: 180rpx;
+  margin-right: 12rpx;
+  border-radius: 8rpx;
+  background: #eee;
+}
+
+.placeholder-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  align-items: flex-start;
+}
+
+.placeholder-box {
+  width: 200rpx;
+  height: 140rpx;
+  border-radius: 8rpx;
+  border: 1px dashed #ccc;
+  background: #f7f7f7;
+  color: #999;
+  font-size: 22rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholder-hint {
+  width: 100%;
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: #999;
+}
+
+.placeholder-honor {
+  padding: 20rpx;
+  border: 1px dashed #ccc;
+  border-radius: 8rpx;
+  background: #f7f7f7;
+}
+
+.placeholder-honor-line {
+  color: #999;
+  font-size: 26rpx;
+  margin-bottom: 8rpx;
+}
+
+.honor-item {
+  font-size: 26rpx;
+  line-height: 1.5;
+  margin-bottom: 8rpx;
+  color: #333;
+}
+
+.field {
+  padding: 20rpx 0;
+  border-bottom: 1px solid #eee;
+}
+
+.field:last-child {
+  border-bottom: none;
+}
+
+.field-label {
+  font-size: 24rpx;
+  color: #666;
+  margin-bottom: 8rpx;
+}
+
+.field-value {
+  font-size: 28rpx;
+  line-height: 1.45;
+}
+
+.field-value.missing {
+  color: #a65c00;
+  font-weight: 600;
+}

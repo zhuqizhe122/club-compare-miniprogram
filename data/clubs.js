@@ -892,12 +892,12 @@ function getAllClubs() {
   return clubs
 }
 
+function getClubById(id) {
+  return clubs.find((c) => c.id === id) || null
+}
+
 function getClubsByIds(ids) {
-  const set = {}
-  ;(ids || []).forEach((id) => {
-    set[id] = true
-  })
-  return clubs.filter((c) => set[c.id])
+  return (ids || []).map((id) => clubs.find((c) => c.id === id)).filter(Boolean)
 }
 
 function displayField(value) {
@@ -907,8 +907,33 @@ function displayField(value) {
   return value
 }
 
+/** @returns {string[]} */
+function normalizeImages(club) {
+  const raw = club && club.images
+  if (!raw) return []
+  if (Array.isArray(raw)) {
+    return raw.filter((x) => x && String(x).trim())
+  }
+  if (typeof raw === 'string' && raw.trim()) return [raw.trim()]
+  return []
+}
+
+/** @returns {string[]} */
+function normalizeHonors(club) {
+  const raw = club && club.honors
+  if (raw === null || raw === undefined) return []
+  if (Array.isArray(raw)) {
+    return raw.map((x) => String(x).trim()).filter(Boolean)
+  }
+  const text = String(raw).trim()
+  return text ? [text] : []
+}
+
 module.exports = {
   getAllClubs,
+  getClubById,
   getClubsByIds,
   displayField,
+  normalizeImages,
+  normalizeHonors,
 }

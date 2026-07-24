@@ -1,6 +1,7 @@
 {
   "compileType": "miniprogram",
-  "libVersion": "trial",
+  "miniprogramRoot": "./",
+  "libVersion": "3.5.5",
   "packOptions": {
     "ignore": [],
     "include": []
@@ -37,5 +38,6 @@
     "tabSize": 2
   },
   "appid": "wx6adb4f96ed4ee978",
-  "simulatorPluginLibVersion": {}
+  "simulatorPluginLibVersion": {},
+  "projectname": "club-compare-miniprogram"
 }

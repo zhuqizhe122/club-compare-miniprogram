@@ -1,65 +1,59 @@
 # 社团数据契约
 
-> 本契约描述 `data/clubs.js` 当前已经存在的接口。任何字段或函数语义变化都必须先更新本文档并获得 Review。
+> 2026-07-24 更新：资料库支持**分类筛选**与**搜索**；分类可由运行时推断，亦可选写入 `category`。
 
 ## Club 对象
 
 | 字段 | 类型 | 必填 | 含义 |
 |---|---|---|---|
-| `id` | string | 是 | 唯一、稳定的内部标识，用于会话选择和倾向值 |
-| `name` | string | 是 | 用户可见的社团名称，非空 |
-| `tagline` | string | 是 | 选择页展示的简短介绍，非空 |
-| `weeklyHours` | string | 否 | 每周时间投入 |
+| `id` | string | 是 | 唯一稳定 ID |
+| `name` | string | 是 | 名称 |
+| `tagline` | string | 是 | 简介 |
+| `weeklyHours` | string | 否 | 每周时间 |
 | `frequency` | string | 否 | 活动频率 |
-| `memberRole` | string | 否 | 普通成员通常承担的职责 |
-| `vibe` | string | 否 | 社团氛围标签或简述 |
+| `memberRole` | string | 否 | 普通成员职责 |
+| `vibe` | string | 否 | 氛围 |
+| `images` | string[] | 否 | 本地图片路径；空则详情页显示图片占位 |
+| `honors` | string \| string[] | 否 | 荣誉/成果介绍；空则详情页显示荣誉占位 |
+| `category` | string | 否 | 分类 id（见下表）；缺省时由 `utils/categories.js` 推断 |
 
-约束：
+### 分类枚举（v1）
 
-- `id` 在同一数据集中必须唯一；已有 ID 不应仅因文案变化而修改。
-- 四个比较字段允许使用 `null`、`undefined`、空字符串或仅空白表示缺失。
-- 缺失比较字段必须通过 `displayField()` 显示为“未提供”，不得推断或编造。
-- 当前契约没有 `category` 字段；引入分类前必须先批准契约变化。
+| id | 展示名 |
+|----|--------|
+| `theory` | 理论学术 |
+| `sport` | 体育运动 |
+| `arts` | 文艺实践 |
+| `service` | 公益服务 |
+| `culture` | 文化交流 |
+| `tech` | 科技实践 |
+| `other` | 其他兴趣 |
 
-## 当前数据集基线
-
-- `data/clubs.js` 当前包含 98 个社团。
-- 2026-07-21 静态校验确认：ID 与名称无重复，七个契约字段均为非空字符串。
-- 当前 98 条记录没有缺失比较字段，但消费页面仍必须保留“未提供”的兼容行为。
-- 社团名称来自用户提供的名单；其他展示字段是当前原型内容，实际信息应以社团现场介绍为准。
+- 缺失比较字段经 `displayField()` →「未提供」  
+- **不要求** Club 上持久化 `tags`；匹配由 `utils/infer-tags.js` 推断  
 
 ## 模块导出
 
-### `getAllClubs()`
+- `getAllClubs()`  
+- `getClubById(id)`  
+- `getClubsByIds(ids)` — **保持输入 ID 顺序**  
+- `displayField(value)`  
 
-- 返回当前本地社团数组。
-- 当前实现返回内部数组本身；调用方必须将返回值视为只读，不得增删或直接改写对象。
+## 资料库交互
 
-### `getClubsByIds(ids)`
+- 支持按分类筛选（含「全部」）  
+- 支持按名称 / 简介关键字搜索（本地，大小写不敏感）  
+- 分类与搜索可组合  
 
-- `ids` 应为社团 ID 数组；缺失值按空数组处理。
-- 未知 ID 被忽略，重复 ID 不会产生重复结果。
-- 返回顺序是 `data/clubs.js` 中的数据集顺序，不保证与输入 ID 顺序一致。
+## 会话状态（app.js）
 
-### `displayField(value)`
-
-- `null`、`undefined`、空字符串和仅空白字符串返回“未提供”。
-- 其他值按当前值返回。
-
-## 会话状态
-
-`app.js` 当前维护：
-
-- `selectedClubIds: string[]`：当前候选社团 ID；页面规则要求 2–3 个后才能比较。
-- `tendency: 'club:<id>' | 'none' | null`：当前倾向。
-
-两者只存在当前小程序会话，不承诺持久化或跨设备同步。
+| 字段 | 含义 |
+|------|------|
+| `quizAnswers` | 问卷答案 |
+| `recommendation` | `{ clubIds, items }` |
+| `basketIds` | 比较篮，**最多 4** |
+| `tendency` | 可选 |
 
 ## 变更协议
 
-新增字段、改变必填性、改变缺失值展示、改变 ID 或排序语义时：
-
-1. 先更新本文档和相关规格。
-2. 指定 `data/clubs.js` 的单一负责人。
-3. 再修改数据和消费页面。
-4. 更新验证记录并人工回归。
+改字段/语义：先改本文档与规格，再改数据与页面。

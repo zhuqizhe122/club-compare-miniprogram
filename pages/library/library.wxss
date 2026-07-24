@@ -1,0 +1,87 @@
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+}
+
+.search-input {
+  flex: 1;
+  height: 72rpx;
+  padding: 0 24rpx;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+}
+
+.search-clear {
+  font-size: 24rpx;
+  color: #666;
+  padding: 8rpx;
+}
+
+.cat-scroll {
+  width: 100%;
+  white-space: nowrap;
+  margin-bottom: 24rpx;
+}
+
+.cat-chip {
+  display: inline-block;
+  padding: 12rpx 24rpx;
+  margin-right: 12rpx;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 999rpx;
+  font-size: 24rpx;
+  color: #333;
+}
+
+.cat-chip.active {
+  background: #1a1a1a;
+  border-color: #1a1a1a;
+  color: #fff;
+}
+
+.club-item {
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+  background: #fff;
+  border-radius: 8rpx;
+  border: 1px solid #e5e5e5;
+}
+
+.club-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.club-name {
+  flex: 1;
+  font-weight: 600;
+  font-size: 30rpx;
+}
+
+.cat-badge {
+  flex-shrink: 0;
+  font-size: 20rpx;
+  color: #555;
+  background: #f0f0f0;
+  padding: 4rpx 12rpx;
+  border-radius: 6rpx;
+}
+
+.club-tagline {
+  color: #666;
+  font-size: 24rpx;
+  margin-top: 6rpx;
+}
+
+.club-preview {
+  margin-top: 10rpx;
+  font-size: 22rpx;
+  color: #333;
+}

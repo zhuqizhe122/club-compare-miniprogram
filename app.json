@@ -1,17 +1,19 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/list/list",
+    "pages/library/library",
+    "pages/club/club",
+    "pages/quiz/quiz",
+    "pages/recommend/recommend",
     "pages/compare/compare",
     "pages/result/result"
   ],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "加入前先比一比",
+    "navigationBarTitleText": "选社助手",
     "navigationBarBackgroundColor": "#ffffff",
     "backgroundColor": "#f7f7f7"
   },
   "style": "v2",
-  "sitemapLocation": "sitemap.json",
-  "lazyCodeLoading": "requiredComponents"
+  "sitemapLocation": "sitemap.json"
 }

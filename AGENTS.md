@@ -1,65 +1,46 @@
 # AGENTS.md — club-compare-miniprogram
 
-Standing instructions for any coding agent working in this repo. Read before changing files.
+Standing instructions for any coding agent. Read before changing files.
+
+## Docs before code
+
+Behaviour / feature changes: update `master-plan.md`, `docs/data-contract.md`, and active spec under `specs/` **first**, then code.
 
 ## Project goal
 
-Local-first WeChat Mini Program prototype: **加入前先比一比** — let a first-year student pick 2–3 sample clubs, compare four fixed dimensions, then mark a preference or「先都不加」. Real join happens offline; this app does not complete 加群.
+Local-first WeChat Mini Program with **two parts**:
 
-## Current stack
+1. **全部社团资料** — browse full local club catalog + detail  
+2. **问卷推荐** — ≥10-question quiz → rule recommendations (reason + intro) → pick **≤4** to compare → optional detail → suggested questions  
+
+No in-app 加群. No live LLM.
+
+## Stack
 
 | Item | Choice |
 |------|--------|
-| Preview target | WeChat Mini Program (WeChat DevTools) |
-| Fallback | Plain H5 with the same flow only if DevTools is blocked |
-| Data & persistence | Local sample data in `data/clubs.js`; in-session `globalData` only |
-| Backend | None |
-| AI / auth / payments | None |
+| Runtime | WeChat Mini Program |
+| Data | `data/clubs.js` + session `globalData` |
+| Matching | `utils/match.js` + inferred tags |
+| Backend / AI / auth | None |
 
-## Spec & plan locations
+## Flow
 
-- Project direction: `master-plan.md`
-- Current flow: `specs/001-club-compare-flow/` (spec, plan, tasks, remaining-backlog, quickstart)
-- Data interface: `docs/data-contract.md`
-- Validation trail: `validation-checklist.md`, `fix-log.md`
-- Collaboration templates: `docs/issue-template.md`, `docs/pr-template.md`
+**Part 1:** `index` → `library` → `club`  
 
-Before behavioural changes, read the relevant in-repo spec and remaining backlog. Before data-model changes, read and update the data contract.
+**Part 2:** `index` → `quiz` → `recommend` → (`compare` \| `club`) → `result`
 
-## Flow (do not invent extra screens)
+## Non-goals
 
-`pages/index` → `pages/list` → `pages/compare` → `pages/result`
-
-## Non-goals (do not add unless an ADR / master-plan update approves)
-
-- Login, cloud sync, remote club DB, backend APIs  
-- AI recommend / live LLM calls  
-- In-app QR / 加群 / 报名  
-- New npm dependencies, payment, analytics  
-- Unrelated template pages
+Login, cloud sync, live LLM, in-app QR/加群, npm bloat.
 
 ## Spec-update protocol
 
-1. **Bug** (fails existing acceptance criteria) → fix code; update `fix-log.md`; re-run checklist items; **spec unchanged**.  
-2. **Intended behaviour wrong/incomplete** → **update spec first** (and acceptance criteria), then code, then checklist.  
-3. **New value** (new slice) → add to backlog / GitHub Issue; **do not build in the current window** unless the human explicitly folds it in.  
-4. **Touches stack, data model, or breaks a prior slice** → stop; escalate to master-plan / ADR before coding.
+1. Bug → fix + `fix-log.md`  
+2. Intended behaviour change → docs first, then code  
+3. New value → Issue / backlog unless folded in  
+4. Stack / data contract → update contract + master-plan first  
 
-After any behaviour change, say explicitly: files changed · behaviour changed · how to test · spec / Milestones impact.
+## Git
 
-## Git rule
-
-- Prefer small, reviewable diffs.  
-- Do not commit until the human confirms after reviewing `git diff`.  
-- No `git reset --hard`, `clean -fd`, or `push --force` unless the human explicitly asks.  
-- Never commit secrets (`.env`, private keys). `project.private.config.json` stays gitignored.
-
-## Validation rule
-
-“Done” means a human can walk the flow in WeChat DevTools (or H5 fallback). Update `validation-checklist.md` / `fix-log.md` when fixing regressions.
-
-## Safe command stance (for the human approving tools)
-
-- **Safe**: read-only (`git status`, `git diff`, `git log`, list/read files).  
-- **Cautious**: edit files, commit after confirmation, push.  
-- **Dangerous / default no**: `rm -rf`, force-push, rewrite shared history, expose secrets.
+No commit until human confirms `git diff`. No force-push unless asked.

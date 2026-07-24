@@ -1,0 +1,58 @@
+.rec-item {
+  margin-bottom: 16rpx;
+  padding: 20rpx;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8rpx;
+}
+
+.rec-item.checked {
+  border-color: #1a1a1a;
+}
+
+.rec-row {
+  display: flex;
+  gap: 16rpx;
+}
+
+.check {
+  flex: 0 0 44rpx;
+  width: 44rpx;
+  height: 44rpx;
+  border: 1px solid #999;
+  border-radius: 6rpx;
+  text-align: center;
+  line-height: 44rpx;
+  font-weight: 700;
+}
+
+.rec-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.rec-name {
+  font-weight: 600;
+  font-size: 30rpx;
+}
+
+.rec-tagline {
+  color: #666;
+  font-size: 24rpx;
+  margin-top: 6rpx;
+}
+
+.rec-reason {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  background: #f7faf4;
+  padding: 12rpx 16rpx;
+  border-radius: 6rpx;
+}
+
+.link {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  color: #333;
+  text-decoration: underline;
+}

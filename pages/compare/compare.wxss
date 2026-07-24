@@ -44,6 +44,10 @@
 .cell.label {
   flex: 0 0 180rpx;
   min-width: 180rpx;
-  color: #444;
   background: #fafafa;
+  color: #444;
+}
+
+.linkish {
+  text-decoration: underline;
 }

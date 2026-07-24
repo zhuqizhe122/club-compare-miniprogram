@@ -1,7 +1,8 @@
 Page({
-  onStart() {
-    const app = getApp()
-    app.resetSelection()
-    wx.navigateTo({ url: '/pages/list/list' })
+  onLibrary() {
+    wx.navigateTo({ url: '/pages/library/library' })
+  },
+  onQuiz() {
+    wx.navigateTo({ url: '/pages/quiz/quiz' })
   },
 })

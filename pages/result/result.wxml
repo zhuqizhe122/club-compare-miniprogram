@@ -1,29 +1,64 @@
 <view class="page">
-  <view class="title">你的倾向</view>
-  <view class="lead" wx:if="{{!confirmed}}">看完对照后，标记更倾向的社团，或先都不加。</view>
+  <view class="title">提问建议</view>
 
-  <block wx:if="{{!confirmed}}">
-    <radio-group bindchange="onTendencyChange">
-      <label class="option" wx:for="{{options}}" wx:key="value">
-        <radio value="{{item.value}}" checked="{{tendency === item.value}}" />
-        <text>{{item.label}}</text>
-      </label>
-    </radio-group>
-    <view class="hint" wx:if="{{error}}">{{error}}</view>
-    <button class="btn-primary" bindtap="onConfirm">确认选择</button>
+  <block wx:if="{{step === 'pick'}}">
+    <view class="lead">对照之后，请先选择一个你最感兴趣的社团（或暂时先都不加）。选定后才会展示该社信息，并给出提问建议。</view>
+
+    <view class="section" wx:if="{{pickClubs.length}}">
+      <view class="section-title">你刚对照过的社团</view>
+      <view class="pick-hint">下面只作提醒；请在选项中点选一个。</view>
+      <view class="mini-name" wx:for="{{pickClubs}}" wx:key="id">· {{item.name}}</view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">选择感兴趣的社团</view>
+      <radio-group bindchange="onTendencyChange">
+        <label class="option" wx:for="{{pickOptions}}" wx:key="value">
+          <radio value="{{item.value}}" checked="{{tendency === item.value}}" />
+          <view class="option-text">
+            <view class="option-label">{{item.label}}</view>
+            <view class="option-desc" wx:if="{{item.tagline}}">{{item.tagline}}</view>
+          </view>
+        </label>
+      </radio-group>
+      <view class="hint" wx:if="{{error}}">{{error}}</view>
+      <button class="btn-primary" bindtap="onConfirmPick">确认并查看建议</button>
+    </view>
   </block>
 
   <block wx:else>
-    <view class="confirm-box">
-      <view class="confirm-text">{{confirmText}}</view>
-    </view>
-    <view class="exit-box">
-      <view class="exit-title">下一步在真实渠道完成</view>
-      <view class="exit-body">
-        请带着刚才的判断，再去摊位扫码或加入真实群聊。
-        本原型不提供扫码、加群或报名功能。
+    <view class="confirm-box">{{confirmText}}</view>
+
+    <view class="section" wx:if="{{focusCard}}">
+      <view class="section-title">社团信息</view>
+      <view class="club-card" data-id="{{focusCard.id}}" bindtap="onOpenClub">
+        <view class="club-name">{{focusCard.name}}</view>
+        <view class="club-tagline">{{focusCard.tagline}}</view>
+        <view class="meta">时间：{{focusCard.weeklyHours}}</view>
+        <view class="meta">频率：{{focusCard.frequency}}</view>
+        <view class="meta">职责：{{focusCard.memberRole}}</view>
+        <view class="meta">氛围：{{focusCard.vibe}}</view>
+        <view class="link">查看完整详情 →</view>
       </view>
     </view>
-    <button class="btn-secondary" bindtap="onRestart">重新比较</button>
+
+    <view class="section" wx:elif="{{step === 'advice'}}">
+      <view class="section-title">社团信息</view>
+      <view class="empty-tip">你选择了暂时先都不加。下面给出若再路过摊位可优先核实的问题。</view>
+    </view>
+
+    <view class="ask-box">
+      <view class="ask-title">建议这样问</view>
+      <view class="ask-item" wx:for="{{boothQuestions}}" wx:key="*this">
+        <text class="ask-index">{{index + 1}}.</text>
+        <text>{{item}}</text>
+      </view>
+    </view>
+
+    <view class="exit-box">
+      请带着这些问题去摊位或真实群聊核实。本工具不提供扫码、加群或报名。
+    </view>
+    <button class="btn-secondary" bindtap="onBackPick">返回重选社团</button>
+    <button class="btn-secondary" bindtap="onHome">回到首页</button>
   </block>
 </view>

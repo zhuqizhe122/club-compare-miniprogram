@@ -1,0 +1,42 @@
+<view class="page">
+  <view class="title">全部社团资料</view>
+  <view class="lead">共 {{total}} 个社团，当前显示 {{shown}} 个。可分类筛选或搜索。</view>
+
+  <view class="search-bar">
+    <input
+      class="search-input"
+      placeholder="搜索社团名称或简介"
+      value="{{keyword}}"
+      confirm-type="search"
+      bindinput="onSearchInput"
+    />
+    <view class="search-clear" wx:if="{{keyword}}" bindtap="onClearSearch">清除</view>
+  </view>
+
+  <scroll-view scroll-x class="cat-scroll">
+    <view
+      class="cat-chip {{categoryId === item.id ? 'active' : ''}}"
+      wx:for="{{categories}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="onCategory"
+    >{{item.name}}</view>
+  </scroll-view>
+
+  <view
+    class="club-item"
+    wx:for="{{clubs}}"
+    wx:key="id"
+    data-id="{{item.id}}"
+    bindtap="onOpen"
+  >
+    <view class="club-top">
+      <view class="club-name">{{item.name}}</view>
+      <view class="cat-badge">{{item.categoryName}}</view>
+    </view>
+    <view class="club-tagline">{{item.tagline}}</view>
+    <view class="club-preview">{{item.preview}}</view>
+  </view>
+
+  <view class="hint" wx:if="{{error}}">{{error}}</view>
+</view>

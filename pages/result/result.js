@@ -1,30 +1,60 @@
-const { getClubsByIds } = require('../../data/clubs.js')
+const { getClubsByIds, getClubById, displayField } = require('../../data/clubs.js')
+const { buildBoothQuestions } = require('../../utils/booth-questions.js')
+
+function toClubCard(club) {
+  if (!club) return null
+  return {
+    id: club.id,
+    name: club.name,
+    tagline: club.tagline,
+    weeklyHours: displayField(club.weeklyHours),
+    frequency: displayField(club.frequency),
+    memberRole: displayField(club.memberRole),
+    vibe: displayField(club.vibe),
+  }
+}
+
+function toClubCards(clubs) {
+  return (clubs || []).map(toClubCard)
+}
 
 Page({
   data: {
-    options: [],
+    step: 'pick',
+    pickOptions: [],
+    pickClubs: [],
     tendency: '',
-    confirmed: false,
+    focusCard: null,
+    boothQuestions: [],
     confirmText: '',
     error: '',
   },
 
   onShow() {
-    const ids = getApp().globalData.selectedClubIds || []
-    if (ids.length < 2) {
-      wx.navigateBack({ delta: 1 })
-      return
+    const ids = getApp().globalData.basketIds || []
+    let clubs = getClubsByIds(ids)
+    if (!clubs.length) {
+      const rec = getApp().globalData.recommendation
+      if (rec && rec.clubIds) clubs = getClubsByIds(rec.clubIds.slice(0, 4))
     }
-    const clubs = getClubsByIds(ids)
-    const options = clubs.map((c) => ({
+    this._clubs = clubs
+    const pickOptions = clubs.map((c) => ({
       value: `club:${c.id}`,
-      label: `更倾向：${c.name}`,
+      label: c.name,
+      tagline: c.tagline,
     }))
-    options.push({ value: 'none', label: '先都不加' })
+    pickOptions.push({
+      value: 'none',
+      label: '暂时先都不加',
+      tagline: '先记下问题，稍后再决定',
+    })
     this.setData({
-      options,
+      step: 'pick',
+      pickOptions,
+      pickClubs: toClubCards(clubs),
       tendency: '',
-      confirmed: false,
+      focusCard: null,
+      boothQuestions: [],
       confirmText: '',
       error: '',
     })
@@ -34,23 +64,64 @@ Page({
     this.setData({ tendency: e.detail.value, error: '' })
   },
 
-  onConfirm() {
-    const { tendency, options } = this.data
+  onConfirmPick() {
+    const { tendency, pickOptions } = this.data
     if (!tendency) {
-      this.setData({ error: '请先选择一项倾向' })
+      this.setData({ error: '请先选择一个感兴趣的社团，或选择「暂时先都不加」' })
       return
     }
+
     getApp().globalData.tendency = tendency
-    const opt = options.find((o) => o.value === tendency)
-    const confirmText =
-      tendency === 'none'
-        ? '已记录：你选择先都不加。可以稍后再比较。'
-        : `已记录：${opt ? opt.label : tendency}`
-    this.setData({ confirmed: true, confirmText })
+    const opt = pickOptions.find((o) => o.value === tendency)
+    const quizAnswers = getApp().globalData.quizAnswers || {}
+    let clubs = this._clubs || []
+    let focusCard = null
+
+    if (tendency.indexOf('club:') === 0) {
+      const one = getClubById(tendency.slice(5))
+      if (one) {
+        focusCard = toClubCard(one)
+        clubs = [one].concat(clubs.filter((c) => c.id !== one.id))
+      }
+    }
+
+    const boothQuestions = buildBoothQuestions({
+      clubs: clubs,
+      tendency,
+      quizAnswers,
+    })
+
+    this.setData({
+      step: 'advice',
+      confirmText: opt
+        ? tendency === 'none'
+          ? opt.label
+          : `你感兴趣的社团：${opt.label}`
+        : tendency,
+      focusCard,
+      boothQuestions,
+      error: '',
+    })
   },
 
-  onRestart() {
-    getApp().resetSelection()
+  onOpenClub(e) {
+    const id = e.currentTarget.dataset.id
+    if (!id) return
+    wx.navigateTo({ url: `/pages/club/club?id=${id}` })
+  },
+
+  onBackPick() {
+    this.setData({
+      step: 'pick',
+      focusCard: null,
+      boothQuestions: [],
+      confirmText: '',
+      error: '',
+    })
+  },
+
+  onHome() {
+    getApp().resetSession()
     wx.reLaunch({ url: '/pages/index/index' })
   },
 })

@@ -1,7 +1,17 @@
 <view class="page">
-  <view class="title">加入前先比一比</view>
-  <view class="lead">把 2–3 个候选社团放进同一张对照表，看清时间、活动和氛围后再决定是否加入。</view>
-  <view class="hint">本原型使用本地样例数据，不完成扫码加群。比较后请去摊位或真实群聊加入。</view>
-  <button class="btn-primary" bindtap="onStart">开始比较</button>
-  <button class="btn-secondary" bindtap="onStart">跳过说明，直接进入</button>
+  <view class="title">选社助手</view>
+  <view class="lead">两部分：先看全部社团资料，或用问卷获得推荐后再比较。</view>
+  <view class="hint">本地数据 · 规则匹配（非 AI）· 不提供扫码加群</view>
+
+  <view class="part-card">
+    <view class="part-title">第一部分 · 全部社团资料</view>
+    <view class="part-desc">浏览本地全量社团名册，查看时间、频率、职责与氛围。</view>
+    <button class="btn-primary" bindtap="onLibrary">进入资料库</button>
+  </view>
+
+  <view class="part-card">
+    <view class="part-title">第二部分 · 问卷推荐</view>
+    <view class="part-desc">回答十余道题 → 看推荐与理由 → 自选至多 4 个比较 → 获得可问问题。</view>
+    <button class="btn-secondary" bindtap="onQuiz">开始填写问卷</button>
+  </view>
 </view>

@@ -4,13 +4,17 @@ Page({
   data: {
     columns: [],
     rows: [],
+    error: '',
   },
 
   onShow() {
-    const ids = getApp().globalData.selectedClubIds || []
+    const ids = getApp().globalData.basketIds || []
     if (ids.length < 2) {
-      wx.showToast({ title: '请先选择社团', icon: 'none' })
-      wx.navigateBack({ delta: 1 })
+      this.setData({
+        columns: [],
+        rows: [],
+        error: '请先勾选至少 2 个社团',
+      })
       return
     }
     const columns = getClubsByIds(ids)
@@ -25,10 +29,14 @@ Page({
       label: f.label,
       values: columns.map((c) => displayField(c[f.key])),
     }))
-    this.setData({ columns, rows })
+    this.setData({ columns, rows, error: '' })
   },
 
-  onNext() {
+  onOpen(e) {
+    wx.navigateTo({ url: `/pages/club/club?id=${e.currentTarget.dataset.id}` })
+  },
+
+  onQuestions() {
     wx.navigateTo({ url: '/pages/result/result' })
   },
 })
