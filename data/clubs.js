@@ -3,6 +3,11 @@
  * 社团名称取自用户提供的名单；其余介绍、时间投入、活动频率、
  * 成员职责和氛围均为非官方模拟信息，仅用于产品原型演示。
  */
+const { attachDecisionData } = require('./inference.js')
+const { createRepository } = require('./repository.js')
+const display = require('./display.js')
+const analysis = require('./analysis.js')
+
 const baseClubs = [
   {
     id: 'yanhe-lecturers',
@@ -1001,7 +1006,7 @@ const clubs = baseClubs.map((club) => {
   const category = inferCategory(club.id)
   const intensity = inferIntensity(club.weeklyHours)
   const socialStyle = inferSocialStyle(category, club.vibe)
-  return Object.assign({}, club, {
+  return attachDecisionData(Object.assign({}, club, {
     category,
     categoryLabel: CATEGORY_LABELS[category],
     tags: makeTags(club, category, socialStyle),
@@ -1012,8 +1017,10 @@ const clubs = baseClubs.map((club) => {
     skillBarrier: inferSkillBarrier(category, club.memberRole),
     commitment: inferCommitment(intensity, club.frequency),
     dataStatus: '待社团确认',
-  })
+  }))
 })
+
+const repository = createRepository(clubs)
 
 function getAllClubs() {
   return clubs
@@ -1133,13 +1140,32 @@ function getExpectationCards(ids) {
   }))
 }
 
+/*
+ * 兼容门面：旧消费方继续 require data/clubs.js；实际读、展示与分析能力
+ * 分别委托给 repository/display/analysis 模块。上方旧实现暂留作迁移对照。
+ */
+function modularDifferenceSummary(ids) {
+  const selected = Array.isArray(ids) && typeof ids[0] === 'object'
+    ? ids
+    : repository.getClubsByIds(ids)
+  return analysis.getDifferenceSummary(selected)
+}
+
+function modularExpectationCards(ids) {
+  const selected = Array.isArray(ids) && typeof ids[0] === 'object'
+    ? ids
+    : repository.getClubsByIds(ids)
+  return display.getExpectationCards(selected)
+}
+
 module.exports = {
+  RAW_CLUBS: baseClubs,
   CATEGORY_LABELS,
-  getAllClubs,
-  getClubsByIds,
-  searchClubs,
-  displayField,
-  displayStructured,
-  getDifferenceSummary,
-  getExpectationCards,
+  getAllClubs: repository.getAllClubs,
+  getClubsByIds: repository.getClubsByIds,
+  searchClubs: repository.searchClubs,
+  displayField: display.displayField,
+  displayStructured: display.displayStructured,
+  getDifferenceSummary: modularDifferenceSummary,
+  getExpectationCards: modularExpectationCards,
 }

@@ -1,14 +1,15 @@
+const session = require('./store/session.js')
+
 App({
   globalData: {
-    selectedClubIds: [],
-    preferenceAnswers: {},
-    recommendations: [],
-    tendency: null, // 'club:<id>' | 'none' | null
+    session,
   },
-  resetSelection() {
-    this.globalData.selectedClubIds = []
-    this.globalData.preferenceAnswers = {}
-    this.globalData.recommendations = []
-    this.globalData.tendency = null
+
+  getSession() {
+    return this.globalData.session
+  },
+
+  resetSession() {
+    return this.globalData.session.reset()
   },
 })

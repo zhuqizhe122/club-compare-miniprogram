@@ -1,0 +1,10 @@
+<view class="dimension">
+  <view class="row">
+    <text class="label">{{label}}</text>
+    <text class="value mono">{{unknown ? '待核实' : normalized}}</text>
+  </view>
+  <view class="track">
+    <view class="fill {{unknown ? 'unknown' : ''}}" style="width: {{unknown ? 50 : normalized}}%;"></view>
+  </view>
+  <view wx:if="{{note}}" class="note">{{note}}</view>
+</view>

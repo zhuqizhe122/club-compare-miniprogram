@@ -1,0 +1,44 @@
+:host {
+  display: inline-flex;
+}
+
+.evidence {
+  display: inline-flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 7rpx 13rpx;
+  border: 1px solid #d1ddd9;
+  border-radius: 999rpx;
+  color: #4f6863;
+  background: #f4f7f6;
+  font-size: 21rpx;
+}
+
+.grade {
+  font-weight: 800;
+}
+
+.grade-A,
+.grade-B {
+  color: #087c6b;
+  background: #e3f4ef;
+}
+
+.grade-C {
+  color: #716018;
+  background: #fff8d9;
+}
+
+.grade-D {
+  color: #995b19;
+  background: #fff2dc;
+  border-color: #efd2aa;
+}
+
+.grade-U {
+  color: #68726f;
+}
+
+.compact {
+  padding: 5rpx 11rpx;
+}

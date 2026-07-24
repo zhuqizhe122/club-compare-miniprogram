@@ -1,5 +1,9 @@
 Page({
-  onStart() {
-    wx.navigateTo({ url: '/pages/list/list' })
+  onAssessment() {
+    wx.navigateTo({ url: '/pages/assessment/assessment' })
+  },
+
+  onLibrary() {
+    wx.navigateTo({ url: '/pages/library/library' })
   },
 })

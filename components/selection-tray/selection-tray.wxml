@@ -1,0 +1,18 @@
+<view class="tray safe-bottom">
+  <view class="tray-copy">
+    <text class="count mono">{{clubs.length}} / {{max}}</text>
+    <text class="instruction">{{clubs.length < min ? '选择 2–3 个候选继续' : '已满足比较数量'}}</text>
+  </view>
+  <scroll-view class="selected-list" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="selected-row">
+      <view wx:for="{{clubs}}" wx:key="id" class="selected-chip">
+        <text>{{item.name}}</text>
+        <text class="remove" data-id="{{item.id}}" bindtap="onRemove">×</text>
+      </view>
+      <view wx:if="{{!clubs.length}}" class="empty">尚未选择候选</view>
+    </view>
+  </scroll-view>
+  <button class="continue" disabled="{{clubs.length < min || clubs.length > max}}" bindtap="onContinue">
+    {{buttonText}}
+  </button>
+</view>

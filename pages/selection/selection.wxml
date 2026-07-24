@@ -1,0 +1,38 @@
+<view class="page">
+  <view class="eyebrow">候选确认</view>
+  <view class="title">按选择顺序核对</view>
+  <view class="lead">保留 2～3 个候选后才能比较。候选来源：{{sourceText}}</view>
+
+  <view class="guard {{ready ? 'ready' : ''}}">
+    <text>{{clubs.length}} / 3 个候选</text>
+    <text>{{guardMessage}}</text>
+  </view>
+
+  <view class="selection-card card" wx:for="{{clubs}}" wx:key="id">
+    <view class="card-head">
+      <view class="order">{{item.order}}</view>
+      <view class="identity">
+        <view class="club-name">{{item.name}}</view>
+        <view class="category">{{item.categoryLabel}}</view>
+      </view>
+      <evidence-badge grade="{{item.evidenceGrade}}" text="证据" compact="{{true}}" />
+    </view>
+    <view class="tagline">{{item.tagline}}</view>
+    <view class="facts">
+      <view class="fact"><text>参与时长</text><text>{{item.durationText}}</text></view>
+      <view class="fact"><text>时间投入</text><text>{{item.hoursText}}</text></view>
+      <view class="fact"><text>高峰投入</text><text>{{item.peakText}}</text></view>
+      <view class="fact"><text>字段证据</text><text>D 级 · 原型规则推断</text></view>
+    </view>
+    <view class="risk"><text class="risk-title">未解决风险</text>{{item.riskText}}</view>
+    <button class="remove" data-id="{{item.id}}" bindtap="onRemove">移除此候选</button>
+  </view>
+
+  <view wx:if="{{!clubs.length}}" class="empty card">
+    <view class="section-title">候选列表为空</view>
+    <view class="section-copy">前往社团库，从搜索与筛选结果中加入候选。</view>
+  </view>
+
+  <button class="btn-secondary" bindtap="onBackLibrary">返回社团库继续选择</button>
+  <button class="btn-primary" disabled="{{!ready}}" bindtap="onCompare">比较 {{clubs.length}} 个候选</button>
+</view>

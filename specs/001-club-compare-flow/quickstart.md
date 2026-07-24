@@ -1,5 +1,7 @@
 # 001 — 微信开发者工具验证步骤
 
+> **Checkpoint 历史说明（2026-07-24）**：这些步骤仅回归 001/002 四页 checkpoint。003 八页验收见 `specs/003-adaptive-decision-lab/quickstart.md`；两者证据不得互相冒充。
+
 ## 准备
 
 1. 安装并打开微信开发者工具。

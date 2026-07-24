@@ -1,5 +1,7 @@
 # 001 — 社团对照主流程规格
 
+> **Checkpoint 历史说明（2026-07-24）**：本文件冻结四页 walking skeleton 的既有验收语义，是回归基线，不因专业版而改写为八页。后续产品行为由 `specs/003-adaptive-decision-lab/spec.md` 演进；本说明不表示 003 已实现。
+
 > 本规格描述当前四页决策罗盘 UI 基线；偏好分流与搜索详见 `specs/002-preference-triage/spec.md`。
 
 ## 用户与目标

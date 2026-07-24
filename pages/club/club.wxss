@@ -1,0 +1,65 @@
+.hero,
+.detail-card,
+.bar-card,
+.evidence-card {
+  padding: 28rpx;
+  margin-bottom: 34rpx;
+}
+
+.hero-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18rpx;
+}
+
+.hero .title {
+  margin-top: 8rpx;
+  font-size: 40rpx;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.fact {
+  display: flex;
+  gap: 24rpx;
+  padding: 20rpx 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: 25rpx;
+}
+
+.fact:last-child {
+  border-bottom: 0;
+}
+
+.fact-label {
+  flex: 0 0 150rpx;
+  color: var(--ink);
+  font-weight: 650;
+}
+
+.evidence-line {
+  margin-bottom: 20rpx;
+}
+
+.source-title {
+  margin-bottom: 10rpx;
+  font-weight: 700;
+}
+
+.warning {
+  margin-top: 22rpx;
+  padding: 20rpx;
+  border-radius: 14rpx;
+  color: var(--warn);
+  background: var(--warn-bg);
+  font-size: 23rpx;
+}
+
+.missing {
+  text-align: center;
+}

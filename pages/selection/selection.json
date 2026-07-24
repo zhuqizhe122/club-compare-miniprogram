@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "确认候选",
+  "usingComponents": {
+    "evidence-badge": "/components/evidence-badge/evidence-badge"
+  }
+}

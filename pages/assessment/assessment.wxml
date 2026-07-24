@@ -1,0 +1,52 @@
+<view class="page assessment-page" wx:if="{{question}}">
+  <view class="progress-head">
+    <view>
+      <view class="eyebrow">DECISION PROFILE</view>
+      <view class="progress-title">第 {{questionIndex + 1}} 题</view>
+    </view>
+    <view class="progress-count mono">至少 {{minQuestions}} · 最多 {{maxQuestions}}</view>
+  </view>
+  <view class="progress-track">
+    <view class="progress-fill" style="width: {{(questionIndex + 1) / maxQuestions * 100}}%;"></view>
+  </view>
+
+  <view class="trigger">
+    <text class="trigger-label">为什么问：</text>
+    <text>{{triggerReason}}</text>
+  </view>
+
+  <view class="question-card card">
+    <view class="question-meta">
+      <text class="dimension">{{question.dimension}}</text>
+      <text class="type">{{question.typeLabel}}</text>
+      <text wx:if="{{question.hardConstraint}}" class="hard">硬条件</text>
+    </view>
+    <view class="question-title">{{question.prompt}}</view>
+    <view wx:if="{{question.multiple}}" class="multiple-tip">可选择多项；“没有固定冲突”与其他选项互斥</view>
+
+    <view class="options">
+      <view
+        wx:for="{{question.options}}"
+        wx:key="value"
+        class="option {{item.selected ? 'selected' : ''}}"
+        data-value="{{item.value}}"
+        bindtap="onChoose"
+      >
+        <view class="selector">{{item.selected ? '✓' : ''}}</view>
+        <view class="option-content">
+          <view class="option-label">{{item.label}}</view>
+          <view wx:if="{{item.description}}" class="option-description">{{item.description}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="answered-hint">已记录 {{answeredCount}} 题。达到 8 题后，系统会在候选稳定时结束；无论如何不超过 14 题。</view>
+
+  <view class="navigation">
+    <button class="previous" disabled="{{!canPrevious}}" bindtap="onPrevious">上一题</button>
+    <button class="next" disabled="{{!canNext}}" bindtap="onNext">
+      {{isLastAllowed ? '完成并生成推荐' : '下一题'}}
+    </button>
+  </view>
+</view>

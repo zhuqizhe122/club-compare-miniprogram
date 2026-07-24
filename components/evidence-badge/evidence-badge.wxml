@@ -1,0 +1,4 @@
+<view class="evidence grade-{{grade}} {{compact ? 'compact' : ''}}">
+  <text class="grade">{{grade}}</text>
+  <text wx:if="{{!compact}}" class="copy">{{text || '证据等级'}}</text>
+</view>

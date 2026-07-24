@@ -1,0 +1,108 @@
+.header {
+  padding-top: 18rpx;
+}
+
+.grade-note {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+  margin: 22rpx 0;
+  padding: 20rpx;
+  color: #765222;
+  border: 1px solid #efd8af;
+  border-radius: 18rpx;
+  background: var(--warn-bg);
+  font-size: 23rpx;
+}
+
+.grade {
+  display: flex;
+  flex: 0 0 54rpx;
+  width: 54rpx;
+  height: 54rpx;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  border-radius: 50%;
+  background: #a66a26;
+  font-size: 28rpx;
+  font-weight: 800;
+}
+
+.edit-answer {
+  width: auto;
+  margin: 0 0 28rpx;
+  padding: 0 26rpx;
+  color: var(--brand);
+  border: 1px solid var(--line);
+  border-radius: 999rpx;
+  background: #fff;
+  font-size: 24rpx;
+  line-height: 66rpx;
+}
+
+.recommend-item {
+  margin-bottom: 26rpx;
+}
+
+.recommend-item club-card {
+  display: block;
+}
+
+.decision-notes {
+  margin: -38rpx 14rpx 0;
+  padding: 30rpx 22rpx 18rpx;
+  border: 1px solid var(--line);
+  border-top: 0;
+  border-radius: 0 0 20rpx 20rpx;
+  background: #fff;
+}
+
+.note-row {
+  display: flex;
+  gap: 14rpx;
+  color: #546b67;
+  font-size: 22rpx;
+  line-height: 1.55;
+}
+
+.unknown-row {
+  margin-top: 10rpx;
+}
+
+.note-label {
+  flex: 0 0 58rpx;
+  height: 34rpx;
+  border-radius: 8rpx;
+  text-align: center;
+  line-height: 34rpx;
+  font-size: 20rpx;
+  font-weight: 700;
+}
+
+.cost-label {
+  color: #75501f;
+  background: #fff0d4;
+}
+
+.unknown-label {
+  color: #803f38;
+  background: #fae7e4;
+}
+
+.empty {
+  margin-top: 120rpx;
+  padding: 40rpx 30rpx;
+  text-align: center;
+}
+
+.empty-title {
+  font-size: 34rpx;
+  font-weight: 750;
+}
+
+.empty-copy {
+  margin-top: 16rpx;
+  color: var(--ink-soft);
+  font-size: 24rpx;
+}

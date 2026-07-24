@@ -1,5 +1,7 @@
 # 001 — 任务状态
 
+> **Checkpoint 历史说明（2026-07-24）**：勾选状态只记录 001 checkpoint，不代表 003 专业版任务完成。新增实施工作只写入 `specs/003-adaptive-decision-lab/tasks.md`，不回填或改写本历史。
+
 ## 已有基线
 
 - [x] 首页说明和开始入口

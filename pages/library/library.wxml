@@ -1,0 +1,57 @@
+<view class="page page-with-tray">
+  <view class="eyebrow">社团资料库</view>
+  <view class="title">先筛选，再比较</view>
+  <view class="lead">共 {{total}} 个结果。资料均为 D 级原型推断，请到招新现场核实。</view>
+
+  <view class="search card">
+    <input value="{{keyword}}" bindinput="onKeyword" placeholder="搜索名称、方向或标签" confirm-type="search" />
+  </view>
+
+  <scroll-view class="chip-scroll" scroll-x show-scrollbar="{{false}}">
+    <view class="chip-row">
+      <view wx:for="{{categories}}" wx:key="value" class="filter-chip {{category === item.value ? 'active' : ''}}" data-value="{{item.value}}" bindtap="onCategory">{{item.label}}</view>
+    </view>
+  </scroll-view>
+
+  <view class="advanced-head">
+    <text class="section-title">高级筛选</text>
+    <text class="text-button" bindtap="onToggleAdvanced">{{advancedOpen ? '收起' : '展开'}}</text>
+  </view>
+  <view wx:if="{{advancedOpen}}" class="advanced card">
+    <view class="filter-label">时间投入</view>
+    <view class="chip-row wrap">
+      <view wx:for="{{intensities}}" wx:key="value" class="filter-chip {{intensity === item.value ? 'active' : ''}}" data-key="intensity" data-value="{{item.value}}" bindtap="onFilter">{{item.label}}</view>
+    </view>
+    <view class="filter-label">活动形式</view>
+    <view class="chip-row wrap">
+      <view wx:for="{{modes}}" wx:key="value" class="filter-chip {{activityMode === item.value ? 'active' : ''}}" data-key="activityMode" data-value="{{item.value}}" bindtap="onFilter">{{item.label}}</view>
+    </view>
+    <view class="filter-label">入门门槛</view>
+    <view class="chip-row wrap">
+      <view wx:for="{{barriers}}" wx:key="value" class="filter-chip {{skillBarrier === item.value ? 'active' : ''}}" data-key="skillBarrier" data-value="{{item.value}}" bindtap="onFilter">{{item.label}}</view>
+    </view>
+    <view class="reset" bindtap="onResetFilters">清除高级筛选</view>
+  </view>
+
+  <view class="results">
+    <club-card
+      wx:for="{{visibleClubs}}"
+      wx:key="id"
+      club="{{item.club}}"
+      evidenceGrade="{{item.evidenceGrade}}"
+      selected="{{item.selected}}"
+      reasons="{{item.reasons}}"
+      bind:select="onSelect"
+      bind:detail="onDetail"
+    />
+  </view>
+  <view wx:if="{{!total}}" class="empty card">
+    <view class="empty-title">没有匹配的社团</view>
+    <view class="section-copy">换一个关键词、分类，或清除高级筛选后再试。</view>
+    <button class="btn-secondary" bindtap="onResetAll">清除全部条件</button>
+  </view>
+  <button wx:if="{{hasMore}}" class="load-more" bindtap="onLoadMore">加载更多（每次 12 个）</button>
+  <view wx:elif="{{total}}" class="end">已显示全部 {{total}} 个结果</view>
+</view>
+
+<selection-tray clubs="{{selectedClubs}}" buttonText="确认候选" bind:remove="onRemove" bind:continue="onOpenSelection" />

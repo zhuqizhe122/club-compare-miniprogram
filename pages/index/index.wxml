@@ -1,27 +1,43 @@
 <view class="page">
   <view class="hero">
-    <view class="eyebrow">CLUB DECISION COMPASS</view>
-    <view class="hero-title">别只凭第一眼，<br />找到真正适合你的社团</view>
-    <view class="hero-lead">用四个偏好缩小范围，再把 2–3 个候选放在同一张表里。选择之前，先看清时间、投入与日常体验。</view>
-    <button class="btn-primary hero-action" bindtap="onStart">开始寻找适合我的社团</button>
+    <view class="eyebrow">CLUB DECISION LAB</view>
+    <view class="hero-title">用专业决策方法，<br />找到更适合你的社团</view>
+    <view class="hero-lead">把兴趣、时间、门槛和投入转成可追溯的判断条件。推荐分只表示与你的偏好有多匹配，不表示社团质量高低。</view>
+    <view class="entry-grid">
+      <view class="entry-card assessment-entry" bindtap="onAssessment">
+        <view class="entry-kicker">8–14 个问题</view>
+        <view class="entry-title">开始专业测评</view>
+        <view class="entry-copy">建立个人决策画像，生成 6 个有理由、也有风险提示的候选。</view>
+        <view class="entry-link">开始测评 →</view>
+      </view>
+      <view class="entry-card" bindtap="onLibrary">
+        <view class="entry-kicker">完整社团库</view>
+        <view class="entry-title">直接浏览资料</view>
+        <view class="entry-copy">按名称和类别查找社团，不建立偏好画像，也不自动替你判断。</view>
+        <view class="entry-link">进入资料库 →</view>
+      </view>
+    </view>
     <view class="privacy-note">全程本地计算 · 不登录 · 不保存你的选择</view>
   </view>
 
   <view class="value-section">
-    <view class="section-title">三步，把“好像不错”变成有依据的判断</view>
+    <view class="section-title">专业价值在哪里</view>
     <view class="step card">
       <view class="step-number">01</view>
-      <view><view class="step-title">先缩圈</view><view class="step-copy">回答 4 个轻量问题，得到 6 个值得进一步了解的候选。</view></view>
+      <view><view class="step-title">先约束，再排序</view><view class="step-copy">先检查时间、费用和门槛等硬条件，再计算兴趣与参与方式的匹配度。</view></view>
     </view>
     <view class="step card">
       <view class="step-number">02</view>
-      <view><view class="step-title">再比较</view><view class="step-copy">按你的选择顺序，并排看投入、频率、职责和氛围。</view></view>
+      <view><view class="step-title">结论可以追溯</view><view class="step-copy">每个推荐都展示匹配理由、现实代价和未知项，便于你继续核实。</view></view>
     </view>
     <view class="step card">
       <view class="step-number">03</view>
-      <view><view class="step-title">去确认</view><view class="step-copy">带着预期卡和现场追问去摊位，不在信息不足时仓促加入。</view></view>
+      <view><view class="step-title">把决定留给你</view><view class="step-copy">系统只帮助缩小范围；最终选择仍应结合招新现场沟通和个人体验。</view></view>
     </view>
   </view>
 
-  <view class="disclaimer">社团资料为原型演示级推测，均需向社团确认；本工具不代替招新现场的真实沟通。</view>
+  <view class="boundary">
+    <view class="boundary-title">资料 D 级边界</view>
+    <view class="boundary-copy">当前社团画像主要来自原型推断，证据等级为 D：只能用于形成待核实的候选，不能证明实际招新安排、费用、选拔要求或活动体验。匹配分 ≠ 证据强度，更不等于官方评价。</view>
+  </view>
 </view>

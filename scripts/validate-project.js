@@ -57,11 +57,49 @@ walk(pageRoot, '.wxml').forEach((wxmlFile) => {
 })
 
 const appConfig = JSON.parse(fs.readFileSync(path.join(root, 'app.json'), 'utf8'))
-assert.deepStrictEqual(appConfig.pages, [
+const legacyCheckpointPages = [
   'pages/index/index',
   'pages/list/list',
   'pages/compare/compare',
   'pages/result/result',
-], '顶层页面必须保持批准的四页主流程')
+]
+const professionalTargetPages = [
+  'pages/index/index',
+  'pages/assessment/assessment',
+  'pages/recommend/recommend',
+  'pages/library/library',
+  'pages/club/club',
+  'pages/selection/selection',
+  'pages/compare/compare',
+  'pages/result/result',
+]
+const migrationApprovedPages = new Set([
+  ...legacyCheckpointPages,
+  ...professionalTargetPages,
+])
+const pages = appConfig.pages
+const isLegacyCheckpoint = JSON.stringify(pages) === JSON.stringify(legacyCheckpointPages)
+const isProfessionalTarget = JSON.stringify(pages) === JSON.stringify(professionalTargetPages)
+const isOrderedMigration = pages.length >= legacyCheckpointPages.length
+  && pages[0] === 'pages/index/index'
+  && pages.includes('pages/compare/compare')
+  && pages.includes('pages/result/result')
+  && pages.every((page, index) => (
+    migrationApprovedPages.has(page)
+    && pages.indexOf(page) === index
+    && (page === 'pages/list/list'
+      || professionalTargetPages.indexOf(page) >= professionalTargetPages.indexOf(
+        pages.slice(0, index).filter((previous) => previous !== 'pages/list/list').slice(-1)[0]
+          || 'pages/index/index'
+      ))
+  ))
 
-console.log('项目静态校验通过：JSON、JS、WXML 事件、系统边界与四页路由均有效。')
+assert.ok(
+  isLegacyCheckpoint || isProfessionalTarget || isOrderedMigration,
+  '顶层页面只能是 001/002 四页 checkpoint、003 八页目标，或由这些批准路由组成的有序迁移态'
+)
+
+const routePhase = isLegacyCheckpoint
+  ? '001/002 四页 checkpoint'
+  : (isProfessionalTarget ? '003 八页目标' : '003 有序迁移态')
+console.log(`项目静态校验通过：JSON、JS、WXML 事件、系统边界与${routePhase}均有效。`)

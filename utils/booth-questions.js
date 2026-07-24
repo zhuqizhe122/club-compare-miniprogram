@@ -2,6 +2,7 @@ const {
   getClubsByIds,
   getDifferenceSummary,
 } = require('../data/clubs.js')
+const { fieldLabel } = require('./labels.js')
 
 const REQUIRED_CONFIRM_FIELDS = [
   { key: 'weeklyHours', label: '每周实际投入' },
@@ -20,8 +21,8 @@ function isMissing(value) {
   return value === null || value === undefined || String(value).trim() === ''
 }
 
-function addUnique(result, item) {
-  if (result.length >= 3) return
+function addUnique(result, item, limit) {
+  if (result.length >= (limit || 3)) return
   if (!result.some((existing) => existing.question === item.question)) result.push(item)
 }
 
@@ -33,6 +34,52 @@ function generateBoothQuestions(selected, options) {
   const clubs = resolveClubs(selected)
   const settings = options || {}
   const result = []
+  const insights = settings.insights || null
+  const limit = insights ? 5 : 3
+
+  if (insights) {
+    const hardEvaluations = []
+      .concat(insights.hardEvaluations || insights.hardConstraints || [])
+      .filter((item) => item && (item.result === 'UNKNOWN' || item.result === 'FAIL'))
+    hardEvaluations.forEach((item) => {
+      const club = clubs.find((candidate) => candidate.id === (item.clubId || insights.clubId))
+      addUnique(result, {
+        source: item.result === 'FAIL' ? 'hard-risk' : 'hard-unknown',
+        priority: 1,
+        clubId: club && club.id,
+        field: item.fieldPath,
+        evidenceIds: item.evidenceIds || [],
+        question: `${club ? club.name : '这个社团'}在“${fieldLabel(item.fieldPath)}”上的本学期实际规则是什么？能否提供明确时间或书面说明？`,
+      }, limit)
+    })
+
+    ;[].concat(insights.stressTests || []).filter((item) => (
+      item && (item.result === 'UNKNOWN' || item.result === 'AT_RISK')
+    )).forEach((item) => {
+      const club = clubs.find((candidate) => candidate.id === item.clubId)
+      addUnique(result, {
+        source: item.result === 'AT_RISK' ? 'stress-risk' : 'stress-unknown',
+        priority: 2,
+        clubId: item.clubId,
+        field: (item.requiredFieldPaths || [])[0],
+        evidenceIds: item.evidenceIds || [],
+        question: `遇到“${item.scenarioLabel || item.scenarioId || '课业压力'}”时，${club ? club.name : '社团'}允许请假、降频或调整任务吗？`,
+      }, limit)
+    })
+
+    ;[].concat(insights.unknowns || insights.lowConfidence || []).forEach((item) => {
+      const field = typeof item === 'string' ? item : item.fieldPath
+      const clubId = typeof item === 'string' ? insights.clubId : item.clubId
+      const club = clubs.find((candidate) => candidate.id === clubId)
+      addUnique(result, {
+        source: 'low-evidence',
+        priority: 3,
+        clubId,
+        field,
+        question: `${club ? club.name : '这个社团'}的“${fieldLabel(field)}”目前依据什么？本学期是否已经确认？`,
+      }, limit)
+    })
+  }
 
   clubs.some((club) => {
     let found = false
@@ -43,7 +90,7 @@ function generateBoothQuestions(selected, options) {
           clubId: club.id,
           field: field.key,
           question: `请问${club.name}的${field.label}目前怎样？`,
-        })
+        }, limit)
         found = true
       }
     })
@@ -57,7 +104,7 @@ function generateBoothQuestions(selected, options) {
       source: 'difference',
       field: difference.field,
       question: `这几项原型资料在“${difference.label}”上不同；${names}的实际情况分别是什么？`,
-    })
+    }, limit)
   })
 
   let tendency = settings.tendency || ''
@@ -69,13 +116,13 @@ function generateBoothQuestions(selected, options) {
       clubId: preferred.id,
       field: 'commitment',
       question: `我目前更倾向${preferred.name}；新成员最容易低估的长期投入或职责是什么？`,
-    })
+    }, limit)
   } else if (settings.preference && settings.preference.socialStyle) {
     addUnique(result, {
       source: 'preference',
       field: 'socialStyle',
       question: '我很在意日常互动方式；普通活动中独立参与和团队协作各占多少？',
-    })
+    }, limit)
   }
 
   clubs.filter((club) => club.dataStatus === '待社团确认').forEach((club) => {
@@ -84,7 +131,7 @@ function generateBoothQuestions(selected, options) {
       clubId: club.id,
       field: 'dataStatus',
       question: `${club.name}的时间、门槛和成员职责均为原型估计，哪些与本学期实际安排不同？`,
-    })
+    }, limit)
   })
 
   const primary = clubs[0]
@@ -94,22 +141,22 @@ function generateBoothQuestions(selected, options) {
       clubId: primary.id,
       field: 'memberRole',
       question: `${primary.name}的新成员前四周通常会实际参与哪些活动或任务？`,
-    })
+    }, limit)
     addUnique(result, {
       source: 'baseline',
       clubId: primary.id,
       field: 'weeklyHours',
       question: `${primary.name}所说的每周投入，是否已经包含活动筹备和大型活动周？`,
-    })
+    }, limit)
     addUnique(result, {
       source: 'baseline',
       clubId: primary.id,
       field: 'commitment',
       question: `如果课业临时变忙，${primary.name}是否允许请假或降低一段时间的参与强度？`,
-    })
+    }, limit)
   }
 
-  return result.slice(0, 3)
+  return result.slice(0, limit)
 }
 
 module.exports = {

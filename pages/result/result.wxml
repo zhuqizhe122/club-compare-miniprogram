@@ -1,9 +1,15 @@
 <view class="page">
-  <view class="eyebrow">形成判断</view>
-  <view class="title">{{confirmed ? '带着这张卡，去现场确认' : '此刻，你更倾向哪一种选择？'}}</view>
-  <view class="lead" wx:if="{{!confirmed}}">倾向不是报名，也不是不可撤销的决定。你也可以明确选择“都不加”。</view>
+  <view class="eyebrow">当前结论</view>
+  <view class="title">{{confirmed ? '把倾向变成可检查的预期' : '此刻，你愿意倾向哪一种选择？'}}</view>
+  <view class="lead" wx:if="{{!confirmed && !guardMessage}}">倾向不是报名，也不是系统替你决定。若没有候选值得接受其代价，可以选择“先都不加”。</view>
 
-  <block wx:if="{{!confirmed}}">
+  <view class="guard card" wx:if="{{guardMessage}}">
+    <view class="guard-title">暂时不能形成结果</view>
+    <view class="guard-copy">{{guardMessage}}</view>
+    <button class="btn-primary" bindtap="onAdjust">返回比较</button>
+  </view>
+
+  <block wx:elif="{{!confirmed}}">
     <radio-group bindchange="onTendencyChange">
       <label class="option card {{tendency === item.value ? 'selected' : ''}}" wx:for="{{options}}" wx:key="value">
         <radio value="{{item.value}}" checked="{{tendency === item.value}}" />
@@ -15,7 +21,7 @@
     </radio-group>
     <view class="hint" wx:if="{{error}}">{{error}}</view>
     <button class="btn-primary" bindtap="onConfirm">确认倾向，生成行动卡</button>
-    <button class="btn-secondary" bindtap="onAdjust">返回调整候选</button>
+    <button class="btn-secondary" bindtap="onAdjust">返回比较</button>
   </block>
 
   <block wx:else>
@@ -24,31 +30,87 @@
       <view class="confirm-text">{{confirmText}}</view>
     </view>
 
-    <view class="screenshot-hint">以下区域适合直接截图保存</view>
-    <view class="expectation-card" wx:for="{{expectationCards}}" wx:key="id">
+    <view class="screenshot-hint">仅生成主倾向对应的一张卡</view>
+    <view class="expectation-card {{actionCard.type === 'none' ? 'none-card' : ''}}" wx:if="{{actionCard}}">
       <view class="expectation-head">
-        <view><view class="expectation-kicker">{{item.title}}</view><view class="expectation-name">{{item.name}}</view></view>
-        <view class="status">{{item.status}}</view>
+        <view>
+          <view class="expectation-kicker">{{actionCard.kicker}}</view>
+          <view class="expectation-name">{{actionCard.name}}</view>
+        </view>
+        <view class="status">{{actionCard.status}}</view>
       </view>
-      <view class="expectation-line" wx:for="{{item.expectations}}" wx:for-item="expectation" wx:key="*this">
-        <text class="check">✓</text><text>{{expectation}}</text>
+      <view class="score-strip" wx:if="{{actionCard.scoreText}}">{{actionCard.scoreText}}</view>
+
+      <view class="card-section" wx:if="{{actionCard.expectations}}">
+        <view class="card-section-title">加入前预期</view>
+        <view class="expectation-line" wx:for="{{actionCard.expectations}}" wx:for-item="expectation" wx:key="*this">
+          <text class="check">✓</text><text>{{expectation}}</text>
+        </view>
       </view>
-      <view class="expectation-reminder">{{item.reminder}}</view>
+
+      <view class="card-section" wx:if="{{actionCard.actions}}">
+        <view class="card-section-title">现在这样行动</view>
+        <view class="expectation-line" wx:for="{{actionCard.actions}}" wx:for-item="action" wx:key="*this">
+          <text class="check">→</text><text>{{action}}</text>
+        </view>
+      </view>
+
+      <view class="card-section">
+        <view class="card-section-title">关键理由</view>
+        <view class="expectation-line" wx:for="{{actionCard.reasons}}" wx:for-item="reason" wx:key="*this">
+          <text class="check">·</text><text>{{reason}}</text>
+        </view>
+      </view>
+
+      <view class="card-section" wx:if="{{actionCard.costs}}">
+        <view class="card-section-title">你需要接受的代价</view>
+        <view class="expectation-line" wx:for="{{actionCard.costs}}" wx:for-item="cost" wx:key="*this">
+          <text class="cost-mark">!</text><text>{{cost}}</text>
+        </view>
+      </view>
+
+      <view class="card-section" wx:if="{{actionCard.unknowns}}">
+        <view class="card-section-title">仍然未知</view>
+        <view class="expectation-line" wx:for="{{actionCard.unknowns}}" wx:for-item="unknown" wx:key="*this">
+          <text class="unknown-mark">?</text><text>{{unknown}}</text>
+        </view>
+      </view>
+
+      <view class="expectation-reminder">{{actionCard.reminder}}</view>
     </view>
 
     <view class="questions card">
-      <view class="section-title">到摊位，优先问这 {{boothQuestions.length}} 题</view>
+      <view class="section-title">由比较洞察生成的 {{boothQuestions.length}} 个问题</view>
+      <view class="section-copy">问题优先覆盖硬条件未知、压力情境未知与低等级证据。</view>
       <view class="question" wx:for="{{boothQuestions}}" wx:key="question">
         <view class="question-number">{{index + 1}}</view>
-        <view>{{item.question}}</view>
+        <view class="question-main">
+          <view>{{item.question}}</view>
+          <view class="question-source">为什么问：{{item.sourceText}}</view>
+        </view>
       </view>
     </view>
 
-    <view class="exit-box">
-      <view class="exit-title">最后一步在线下完成</view>
-      <view class="exit-body">核实活动安排与职责后，再通过社团真实招新摊位、官方群聊或报名渠道加入。本工具不会代你报名。</view>
+    <view class="review card">
+      <view class="section-title">四周后，用这些标准复盘</view>
+      <view class="review-item" wx:for="{{reviewStandards}}" wx:key="*this">
+        <view class="review-box"></view>
+        <view>{{item}}</view>
+      </view>
     </view>
-    <button class="btn-primary" bindtap="onAdjust">返回调整</button>
-    <button class="btn-secondary" bindtap="onRestart">重新开始</button>
+
+    <view class="evidence-notice">
+      <view class="evidence-notice-title">证据边界</view>
+      <view>{{evidenceNotice}}</view>
+    </view>
+
+    <view class="exit-box">
+      <view class="exit-title">真实加入仍在线下完成</view>
+      <view class="exit-body">核实后，再通过社团真实招新摊位、官方群聊或报名渠道加入。本工具不会代你报名，也不会保存或同步本次结果。</view>
+    </view>
+    <view class="actions">
+      <button class="btn-primary" bindtap="onAdjust">返回比较</button>
+      <button class="btn-secondary" bindtap="onRestart">重新开始</button>
+    </view>
   </block>
 </view>

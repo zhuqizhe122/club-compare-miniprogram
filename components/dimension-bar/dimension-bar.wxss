@@ -1,0 +1,44 @@
+.dimension {
+  margin-top: 18rpx;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 9rpx;
+}
+
+.label {
+  color: #36534e;
+  font-size: 24rpx;
+}
+
+.value {
+  color: #087c6b;
+  font-size: 22rpx;
+  font-weight: 700;
+}
+
+.track {
+  overflow: hidden;
+  height: 10rpx;
+  border-radius: 999rpx;
+  background: #e6ecea;
+}
+
+.fill {
+  height: 100%;
+  border-radius: 999rpx;
+  background: linear-gradient(90deg, #0b907c, #42b8a1);
+}
+
+.fill.unknown {
+  background: repeating-linear-gradient(135deg, #d8c39f, #d8c39f 8rpx, #eee2cc 8rpx, #eee2cc 16rpx);
+}
+
+.note {
+  margin-top: 7rpx;
+  color: #71827e;
+  font-size: 21rpx;
+}

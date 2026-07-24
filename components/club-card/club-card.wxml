@@ -1,0 +1,32 @@
+<view class="club-card {{selected ? 'selected' : ''}}">
+  <view class="topline">
+    <view class="identity">
+      <text wx:if="{{rank}}" class="rank">#{{rank}}</text>
+      <text class="name">{{club.name}}</text>
+    </view>
+    <view class="score-block">
+      <text class="score mono">{{score}}</text>
+      <text class="score-label">匹配分</text>
+    </view>
+  </view>
+  <view class="tagline">{{club.tagline}}</view>
+  <view class="meta">
+    <text class="chip">{{club.categoryLabel}}</text>
+    <evidence-badge grade="{{evidenceGrade}}" text="证据" compact="{{true}}" />
+    <text class="evidence-copy">匹配分 ≠ 证据强度</text>
+  </view>
+  <view class="reasons">
+    <view wx:for="{{reasons}}" wx:key="*this" class="reason">
+      <text class="reason-mark">✓</text><text>{{item}}</text>
+    </view>
+    <view wx:if="{{caution}}" class="caution">
+      <text class="caution-mark">!</text><text>{{caution}}</text>
+    </view>
+  </view>
+  <view class="actions">
+    <button class="detail" bindtap="onDetail">查看详情</button>
+    <button wx:if="{{selectable}}" class="select {{selected ? 'active' : ''}}" bindtap="onSelect">
+      {{selected ? '已选候选' : '加入候选'}}
+    </button>
+  </view>
+</view>

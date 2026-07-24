@@ -1,15 +1,19 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/list/list",
+    "pages/assessment/assessment",
+    "pages/recommend/recommend",
+    "pages/library/library",
+    "pages/club/club",
+    "pages/selection/selection",
     "pages/compare/compare",
     "pages/result/result"
   ],
   "window": {
     "navigationBarTextStyle": "white",
-    "navigationBarTitleText": "社团决策罗盘",
-    "navigationBarBackgroundColor": "#123c36",
-    "backgroundColor": "#f3f7f5",
+    "navigationBarTitleText": "专业社团决策实验室",
+    "navigationBarBackgroundColor": "#102f2b",
+    "backgroundColor": "#f2f5f3",
     "backgroundTextStyle": "dark"
   },
   "style": "v2",

@@ -1,0 +1,56 @@
+<view class="page" wx:if="{{club}}">
+  <view class="hero card">
+    <view class="hero-top">
+      <view>
+        <view class="eyebrow">{{club.categoryLabel}}</view>
+        <view class="title">{{club.name}}</view>
+      </view>
+      <evidence-badge grade="D" text="字段证据" />
+    </view>
+    <view class="lead">{{club.tagline}}</view>
+    <view class="tag-row">
+      <text wx:for="{{club.tags}}" wx:key="*this" class="chip">{{item}}</text>
+    </view>
+    <button class="btn-primary" bindtap="onToggleSelection">{{selected ? '移除候选' : '加入候选'}}</button>
+  </view>
+
+  <view class="section-title">时间与参与</view>
+  <view class="detail-card card">
+    <view class="fact"><text class="fact-label">普通周</text><text>{{club.normalHours}}</text></view>
+    <view class="fact"><text class="fact-label">高峰周</text><text>{{club.peakHours}}</text></view>
+    <view class="fact"><text class="fact-label">常见时段</text><text>{{club.slotsText}}</text></view>
+    <view class="fact"><text class="fact-label">活动频率</text><text>{{club.frequency}}</text></view>
+    <view class="fact"><text class="fact-label">活动形式</text><text>{{club.modesText}}</text></view>
+    <view class="fact"><text class="fact-label">成长收益</text><text>{{club.benefitsText}}</text></view>
+    <view class="fact"><text class="fact-label">考勤弹性</text><text>{{club.flexibilityText}}；{{club.attendanceText}}</text></view>
+    <view class="fact"><text class="fact-label">投入模式</text><text>{{club.commitmentText}}</text></view>
+  </view>
+
+  <view class="section-title">加入条件与成本</view>
+  <view class="detail-card card">
+    <view class="fact"><text class="fact-label">入门方式</text><text>{{club.entryText}}</text></view>
+    <view class="fact"><text class="fact-label">是否选拔</text><text>{{club.selectionText}}</text></view>
+    <view class="fact"><text class="fact-label">费用估计</text><text>{{club.costText}}</text></view>
+    <view class="fact"><text class="fact-label">器材要求</text><text>{{club.equipmentText}}</text></view>
+    <view class="fact"><text class="fact-label">校外活动</text><text>{{club.offCampusText}}</text></view>
+  </view>
+
+  <view class="section-title">五维体验条</view>
+  <view class="bar-card card">
+    <dimension-bar wx:for="{{club.bars}}" wx:key="label" label="{{item.label}}" value="{{item.value}}" note="{{item.note}}" />
+  </view>
+
+  <view class="section-title">证据与来源说明</view>
+  <view class="evidence-card card">
+    <view class="evidence-line"><evidence-badge grade="D" text="原型推断" /></view>
+    <view class="source-title">来源类型：原型规则推断</view>
+    <view class="section-copy">依据旧版原型文案、社团名称和分类规则推断；没有官方链接、观察日期或核验日期，不能作为硬条件通过依据。</view>
+    <view class="warning">所有详情字段均为 D 级证据，仅用于缩小候选范围。费用、选拔、考勤和时段请向社团负责人逐项确认。</view>
+  </view>
+</view>
+
+<view class="page missing" wx:else>
+  <view class="title">未找到该社团</view>
+  <view class="lead">链接中的社团编号无效或资料已移除。</view>
+  <button class="btn-primary" bindtap="onBackLibrary">返回社团库</button>
+</view>

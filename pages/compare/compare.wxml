@@ -1,46 +1,120 @@
 <view class="page">
-  <view class="eyebrow">并排比较</view>
-  <view class="title">差别在哪里，一眼看清</view>
-  <view class="lead">按你的选择顺序展示。高亮行表示候选之间存在差异。</view>
+  <view class="eyebrow">深度比较</view>
+  <view class="title">先看取舍，再看排名</view>
+  <view class="lead">匹配分只表达你当前填写的偏好；字段证据与演示估计不等于社团承诺。</view>
 
-  <view class="difference-panel card">
-    <view class="difference-title">优先留意的关键差异</view>
-    <view class="difference-item" wx:for="{{keyDifferences}}" wx:key="label">
-      <view class="difference-label">{{index + 1}} · {{item.label}}</view>
-      <view class="difference-copy">{{item.summary}}</view>
-    </view>
-    <view class="hint" wx:if="{{!keyDifferences.length}}">这些候选在结构化字段上较接近，建议重点询问真实活动安排。</view>
+  <view class="guard card" wx:if="{{guardMessage}}">
+    <view class="guard-title">暂时不能比较</view>
+    <view class="guard-copy">{{guardMessage}}</view>
+    <button class="btn-secondary" bindtap="onAdjust">返回候选篮</button>
   </view>
 
-  <view class="match-section" wx:if="{{hasPreference}}">
-    <view class="section-title">为什么可能适合你</view>
-    <scroll-view scroll-x class="reason-scroll">
-      <view class="reason-list">
-        <view class="reason-card card" wx:for="{{columns}}" wx:key="id">
-          <view class="reason-name">{{item.name}}</view>
-          <view class="reason-line" wx:for="{{item.matchReasons}}" wx:for-item="reason" wx:key="*this">· {{reason}}</view>
-          <view class="status">{{item.dataStatus}}</view>
+  <block wx:else>
+    <view class="evidence-reminder">
+      <view class="evidence-mark">D</view>
+      <view>
+        <view class="evidence-title">当前主要是 D 级演示资料</view>
+        <view class="evidence-copy">分数、优势和代价用于演示决策方法；请在摊位核实时间、规则与门槛。</view>
+      </view>
+    </view>
+
+    <view class="section-title">每个候选的决策摘要</view>
+    <view class="summary-card card" wx:for="{{columns}}" wx:key="id">
+      <view class="summary-head">
+        <view>
+          <view class="rank">基础排序第 {{item.baseRank}} 名</view>
+          <view class="club-name">{{item.name}}</view>
+        </view>
+        <view class="score">
+          <text class="score-number">{{item.matchScore}}</text>
+          <text class="score-unit">/100</text>
+          <view class="score-label">{{item.hasPreference ? '偏好匹配' : '尚无有效偏好'}}</view>
         </view>
       </view>
-    </scroll-view>
-  </view>
-
-  <view class="section-title table-title">四维对照</view>
-  <scroll-view scroll-x class="table-scroll">
-    <view class="table card">
-      <view class="row header">
-        <view class="cell label">维度</view>
-        <view class="cell club-head" wx:for="{{columns}}" wx:key="id">{{item.name}}<view class="status mini">{{item.dataStatus}}</view></view>
+      <view class="summary-meta">
+        <text>{{item.hardStatus}}</text>
+        <text>资料等级 D</text>
+        <text>原型推断，待现场核实</text>
       </view>
-      <view class="row {{item.different ? 'different' : ''}}" wx:for="{{rows}}" wx:key="key">
-        <view class="cell label"><text wx:if="{{item.different}}" class="dot"></text>{{item.label}}</view>
-        <view class="cell" wx:for="{{item.values}}" wx:for-item="value" wx:for-index="valueIndex" wx:key="valueIndex">{{value}}</view>
+      <view class="insight-grid">
+        <view class="insight-block strength">
+          <view class="insight-title">可能优势</view>
+          <view class="insight-line" wx:for="{{item.strengths}}" wx:for-item="line" wx:key="*this">· {{line}}</view>
+        </view>
+        <view class="insight-block cost">
+          <view class="insight-title">需要接受的代价</view>
+          <view class="insight-line" wx:for="{{item.costs}}" wx:for-item="line" wx:key="*this">· {{line}}</view>
+        </view>
+        <view class="insight-block unknown">
+          <view class="insight-title">未知项</view>
+          <view class="insight-line" wx:for="{{item.unknowns}}" wx:for-item="line" wx:key="*this">· {{line}}</view>
+        </view>
       </view>
     </view>
-  </scroll-view>
 
-  <view class="actions">
-    <button class="btn-secondary" bindtap="onAdjust">返回调整</button>
-    <button class="btn-primary" bindtap="onNext">下一步：标记倾向</button>
-  </view>
+    <view class="section-title section-gap">关键 3 个权衡</view>
+    <view class="tradeoff-card card" wx:for="{{keyTradeoffs}}" wx:key="order">
+      <view class="tradeoff-number">{{item.order}}</view>
+      <view class="tradeoff-main">
+        <view class="tradeoff-label">{{item.label}}</view>
+        <view class="tradeoff-message">{{item.message}}</view>
+        <view class="tradeoff-values">
+          <view class="tradeoff-value" wx:for="{{item.values}}" wx:for-item="value" wx:key="clubId">
+            <text>{{value.clubName}}</text>
+            <text>{{value.valueText}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section-title section-gap">分组对比</view>
+    <view class="section-copy compare-copy">不使用一张横向巨表；按决策问题逐组阅读。</view>
+    <view class="group card" wx:for="{{comparisonGroups}}" wx:key="id">
+      <view class="group-head">
+        <view class="group-title">{{item.title}}</view>
+        <view class="group-description">{{item.description}}</view>
+      </view>
+      <view class="field-row" wx:for="{{item.rows}}" wx:for-item="row" wx:key="label">
+        <view class="field-label">{{row.label}}</view>
+        <view class="field-values">
+          <view class="field-value" wx:for="{{row.entries}}" wx:for-item="entry" wx:key="clubId">
+            <view class="field-club">{{entry.clubName}}</view>
+            <view class="field-main">{{entry.valueText}}</view>
+            <view class="field-evidence">{{entry.evidenceText}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section-title section-gap">压力情境重排</view>
+    <view class="scenario-tabs">
+      <button
+        class="scenario-tab {{selectedScenarioId === item.id ? 'active' : ''}}"
+        wx:for="{{scenarioOptions}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onScenarioChange"
+      >{{item.label}}</button>
+    </view>
+    <view class="scenario-panel card" wx:if="{{scenarioResult}}">
+      <view class="estimate-banner">D 级演示估计，非预测</view>
+      <view class="scenario-title">{{scenarioResult.label}}</view>
+      <view class="scenario-reason">{{scenarioResult.reason}}</view>
+      <view class="ranking-row" wx:for="{{scenarioResult.ranking}}" wx:key="clubId">
+        <view class="ranking-name">{{item.clubName}}</view>
+        <view class="score-change">
+          <view><text>基础分</text><text class="score-value">{{item.baseScore}}</text></view>
+          <view class="arrow">→</view>
+          <view><text>情境分</text><text class="score-value">{{item.scenarioScore}}</text></view>
+          <view class="delta {{item.deltaClass}}">{{item.deltaText}}</view>
+        </view>
+        <view class="rank-change">{{item.rankText}}</view>
+      </view>
+    </view>
+
+    <view class="actions">
+      <button class="btn-secondary" bindtap="onAdjust">返回候选篮</button>
+      <button class="btn-primary" bindtap="onNext">形成当前倾向</button>
+    </view>
+  </block>
 </view>

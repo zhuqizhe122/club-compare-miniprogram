@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "Top 6 推荐",
+  "usingComponents": {
+    "club-card": "/components/club-card/club-card",
+    "selection-tray": "/components/selection-tray/selection-tray"
+  }
+}
