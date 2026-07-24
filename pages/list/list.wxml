@@ -1,27 +1,107 @@
-<view class="page">
-  <view class="title">选择要比较的社团</view>
-  <view class="lead">请勾选 2–3 个（已选 {{selectedIds.length}} / 3）</view>
+<view class="page {{selectedIds.length ? 'with-tray' : ''}}">
+  <view class="eyebrow">缩小范围</view>
+  <view class="title">从很多可能里，找出值得比较的 2–3 个</view>
+  <view class="lead">推荐只帮你缩圈，不会替你做选择。所有资料均待社团确认。</view>
 
-  <checkbox-group bindchange="onCheckChange">
-    <label
-      class="club-item {{item.checked ? 'checked' : ''}}"
-      wx:for="{{clubs}}"
-      wx:key="id"
-    >
-      <checkbox
-        value="{{item.id}}"
-        checked="{{item.checked}}"
-        disabled="{{!item.checked && selectedIds.length >= 3}}"
-      />
-      <view class="club-text">
-        <view class="club-name">{{item.name}}</view>
-        <view class="club-tagline">{{item.tagline}}</view>
+  <view class="mode-switch">
+    <view class="mode-tab {{mode === 'guide' ? 'active' : ''}}" data-mode="guide" bindtap="onModeChange">帮我缩小范围</view>
+    <view class="mode-tab {{mode === 'search' ? 'active' : ''}}" data-mode="search" bindtap="onModeChange">我已知道名字</view>
+  </view>
+
+  <block wx:if="{{mode === 'guide'}}">
+    <view wx:if="{{!questionnaireComplete}}" class="question-card card">
+      <view class="progress-head">
+        <text>偏好问题 {{currentQuestion + 1}} / 4</text>
+        <text>{{(currentQuestion + 1) * 25}}%</text>
       </view>
-    </label>
-  </checkbox-group>
+      <view class="progress"><view class="progress-fill progress-{{currentQuestion + 1}}"></view></view>
+      <block wx:for="{{questions}}" wx:key="key" wx:for-index="questionIndex" wx:for-item="question">
+        <view wx:if="{{questionIndex === currentQuestion}}">
+          <view class="question-title">{{question.title}}</view>
+          <view
+            wx:for="{{question.options}}"
+            wx:for-item="option"
+            wx:for-index="optionIndex"
+            wx:key="value"
+            class="answer {{answers[question.key] === option.value ? 'selected' : ''}}"
+            data-question="{{questionIndex}}"
+            data-value="{{option.value}}"
+            bindtap="onAnswer"
+          >{{option.label}}</view>
+        </view>
+      </block>
+      <view class="question-foot">选择后自动进入下一题</view>
+    </view>
 
-  <view class="hint" wx:if="{{error}}">{{error}}</view>
-  <view class="hint" wx:elif="{{selectedIds.length >= 3}}">已选满 3 个；取消某一项后才能再选其他</view>
+    <view wx:else>
+      <view class="result-head">
+        <view><view class="section-title">更值得了解的 6 个</view><view class="result-sub">按四项偏好的本地匹配分数排序</view></view>
+        <view class="head-actions"><text bindtap="onEditAnswers">改答案</text><text bindtap="onClearAnswers">清空</text></view>
+      </view>
+      <view
+        class="club-card card {{item.selected ? 'selected' : ''}}"
+        wx:for="{{recommendations}}"
+        wx:key="id"
+        data-id="{{item.club.id}}"
+        bindtap="onToggleClub"
+      >
+        <view class="club-top">
+          <view><view class="club-name">{{item.club.name}}</view><view class="club-category">{{item.club.categoryLabel}}</view></view>
+          <view class="select-mark">{{item.selected ? '已选' : '加入比较'}}</view>
+        </view>
+        <view class="club-tagline">{{item.club.tagline}}</view>
+        <view class="reason" wx:for="{{item.reasons}}" wx:for-item="reason" wx:key="*this">· {{reason}}</view>
+        <view class="status">{{item.dataStatus}}</view>
+      </view>
+    </view>
+  </block>
 
-  <button class="btn-primary" bindtap="onCompare" disabled="{{!clubs.length}}">生成对照表</button>
+  <block wx:else>
+    <view class="search-box card">
+      <text class="search-icon">⌕</text>
+      <input value="{{query}}" bindinput="onQueryInput" placeholder="搜索社团名称或关键词" confirm-type="search" />
+    </view>
+    <scroll-view scroll-x class="chips-scroll">
+      <view class="chips">
+        <view
+          class="chip {{category === item.value ? 'active' : ''}}"
+          wx:for="{{categories}}"
+          wx:key="value"
+          data-value="{{item.value}}"
+          bindtap="onCategoryChange"
+        >{{item.label}}</view>
+      </view>
+    </scroll-view>
+    <view class="search-count">找到 {{results.length}} 个社团</view>
+    <view
+      class="club-card compact card {{item.selected ? 'selected' : ''}}"
+      wx:for="{{results}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="onToggleClub"
+    >
+      <view class="club-top">
+        <view><view class="club-name">{{item.name}}</view><view class="club-category">{{item.categoryLabel}}</view></view>
+        <view class="select-mark">{{item.selected ? '已选' : '加入比较'}}</view>
+      </view>
+      <view class="club-tagline">{{item.tagline}}</view>
+      <view class="status">{{item.dataStatus}}</view>
+    </view>
+    <view class="empty card" wx:if="{{!results.length}}">
+      <view class="empty-title">没有找到匹配结果</view>
+      <view class="hint">试试更短的关键词，或切换到“全部”分类。</view>
+    </view>
+  </block>
+
+  <view class="selection-tray" wx:if="{{selectedIds.length}}">
+    <view class="tray-top">
+      <view><text class="tray-count">{{selectedIds.length}}</text><text> / 3 已选</text></view>
+      <text class="tray-clear" bindtap="onClearSelection">清空</text>
+    </view>
+    <view class="tray-clubs">
+      <view class="tray-chip" wx:for="{{selectedClubs}}" wx:key="id" data-id="{{item.id}}" bindtap="onToggleClub">{{item.name}} ×</view>
+    </view>
+    <view class="tray-error" wx:if="{{error}}">{{error}}</view>
+    <button class="tray-button" bindtap="onCompare" disabled="{{!canCompare}}">{{compareButtonText}}</button>
+  </view>
 </view>

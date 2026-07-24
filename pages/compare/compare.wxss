@@ -1,20 +1,85 @@
+.difference-panel {
+  padding: 26rpx;
+}
+
+.difference-title {
+  font-size: 29rpx;
+  font-weight: 700;
+}
+
+.difference-item {
+  padding-top: 20rpx;
+  margin-top: 18rpx;
+  border-top: 1px solid var(--line);
+}
+
+.difference-label {
+  color: var(--brand);
+  font-size: 23rpx;
+  font-weight: 700;
+}
+
+.difference-copy {
+  margin-top: 8rpx;
+  color: #365952;
+  font-size: 24rpx;
+}
+
+.match-section {
+  margin-top: 34rpx;
+}
+
+.reason-scroll {
+  width: 100%;
+  white-space: nowrap;
+}
+
+.reason-list {
+  display: inline-flex;
+  gap: 16rpx;
+  padding: 2rpx 20rpx 16rpx 2rpx;
+}
+
+.reason-card {
+  width: 390rpx;
+  box-sizing: border-box;
+  padding: 24rpx;
+  white-space: normal;
+}
+
+.reason-name {
+  font-size: 27rpx;
+  font-weight: 700;
+}
+
+.reason-line {
+  margin-top: 10rpx;
+  color: var(--ink-soft);
+  font-size: 22rpx;
+}
+
+.reason-card .status {
+  margin-top: 16rpx;
+}
+
+.table-title {
+  margin-top: 28rpx;
+}
+
 .table-scroll {
   width: 100%;
-  margin-top: 16rpx;
   white-space: nowrap;
 }
 
 .table {
   display: inline-block;
   min-width: 100%;
-  background: #fff;
-  border: 1px solid #e5e5e5;
-  border-radius: 8rpx;
+  overflow: hidden;
 }
 
 .row {
   display: flex;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--line);
 }
 
 .row:last-child {
@@ -22,18 +87,22 @@
 }
 
 .row.header {
-  background: #f0f0f0;
+  background: #e7f1ee;
   font-weight: 600;
 }
 
+.row.different {
+  background: #fffaf0;
+}
+
 .cell {
-  flex: 1;
-  min-width: 160rpx;
-  padding: 20rpx 16rpx;
+  flex: 0 0 280rpx;
+  width: 280rpx;
+  padding: 22rpx 18rpx;
   white-space: normal;
   word-break: break-word;
-  font-size: 24rpx;
-  border-right: 1px solid #eee;
+  font-size: 23rpx;
+  border-right: 1px solid var(--line);
   box-sizing: border-box;
 }
 
@@ -42,8 +111,46 @@
 }
 
 .cell.label {
-  flex: 0 0 180rpx;
-  min-width: 180rpx;
-  color: #444;
-  background: #fafafa;
+  flex: 0 0 160rpx;
+  width: 160rpx;
+  color: var(--ink);
+  background: rgba(246, 249, 248, 0.88);
+  font-weight: 700;
+}
+
+.club-head {
+  font-size: 24rpx;
+}
+
+.status.mini {
+  display: block;
+  margin-top: 8rpx;
+  padding: 3rpx 8rpx;
+  font-size: 18rpx;
+  font-weight: 400;
+}
+
+.dot {
+  display: inline-block;
+  width: 10rpx;
+  height: 10rpx;
+  margin-right: 9rpx;
+  background: #e39a31;
+  border-radius: 50%;
+}
+
+.actions {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 30rpx;
+}
+
+.actions button {
+  flex: 1;
+  margin-top: 0;
+  padding: 0 12rpx;
+}
+
+.actions .btn-primary {
+  flex: 1.35;
 }

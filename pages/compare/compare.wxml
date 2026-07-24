@@ -1,19 +1,46 @@
 <view class="page">
-  <view class="title">对照表</view>
-  <view class="lead">并排比较你勾选的社团（缺项显示「未提供」）</view>
+  <view class="eyebrow">并排比较</view>
+  <view class="title">差别在哪里，一眼看清</view>
+  <view class="lead">按你的选择顺序展示。高亮行表示候选之间存在差异。</view>
 
-  <scroll-view scroll-x class="table-scroll">
-    <view class="table">
-      <view class="row header">
-        <view class="cell label">字段</view>
-        <view class="cell" wx:for="{{columns}}" wx:key="id">{{item.name}}</view>
+  <view class="difference-panel card">
+    <view class="difference-title">优先留意的关键差异</view>
+    <view class="difference-item" wx:for="{{keyDifferences}}" wx:key="label">
+      <view class="difference-label">{{index + 1}} · {{item.label}}</view>
+      <view class="difference-copy">{{item.summary}}</view>
+    </view>
+    <view class="hint" wx:if="{{!keyDifferences.length}}">这些候选在结构化字段上较接近，建议重点询问真实活动安排。</view>
+  </view>
+
+  <view class="match-section" wx:if="{{hasPreference}}">
+    <view class="section-title">为什么可能适合你</view>
+    <scroll-view scroll-x class="reason-scroll">
+      <view class="reason-list">
+        <view class="reason-card card" wx:for="{{columns}}" wx:key="id">
+          <view class="reason-name">{{item.name}}</view>
+          <view class="reason-line" wx:for="{{item.matchReasons}}" wx:for-item="reason" wx:key="*this">· {{reason}}</view>
+          <view class="status">{{item.dataStatus}}</view>
+        </view>
       </view>
-      <view class="row" wx:for="{{rows}}" wx:key="key">
-        <view class="cell label">{{item.label}}</view>
-        <view class="cell" wx:for="{{item.values}}" wx:for-item="val" wx:for-index="vi" wx:key="vi">{{val}}</view>
+    </scroll-view>
+  </view>
+
+  <view class="section-title table-title">四维对照</view>
+  <scroll-view scroll-x class="table-scroll">
+    <view class="table card">
+      <view class="row header">
+        <view class="cell label">维度</view>
+        <view class="cell club-head" wx:for="{{columns}}" wx:key="id">{{item.name}}<view class="status mini">{{item.dataStatus}}</view></view>
+      </view>
+      <view class="row {{item.different ? 'different' : ''}}" wx:for="{{rows}}" wx:key="key">
+        <view class="cell label"><text wx:if="{{item.different}}" class="dot"></text>{{item.label}}</view>
+        <view class="cell" wx:for="{{item.values}}" wx:for-item="value" wx:for-index="valueIndex" wx:key="valueIndex">{{value}}</view>
       </view>
     </view>
   </scroll-view>
 
-  <button class="btn-primary" bindtap="onNext">做出倾向选择</button>
+  <view class="actions">
+    <button class="btn-secondary" bindtap="onAdjust">返回调整</button>
+    <button class="btn-primary" bindtap="onNext">下一步：标记倾向</button>
+  </view>
 </view>

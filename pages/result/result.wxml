@@ -1,29 +1,54 @@
 <view class="page">
-  <view class="title">你的倾向</view>
-  <view class="lead" wx:if="{{!confirmed}}">看完对照后，标记更倾向的社团，或先都不加。</view>
+  <view class="eyebrow">形成判断</view>
+  <view class="title">{{confirmed ? '带着这张卡，去现场确认' : '此刻，你更倾向哪一种选择？'}}</view>
+  <view class="lead" wx:if="{{!confirmed}}">倾向不是报名，也不是不可撤销的决定。你也可以明确选择“都不加”。</view>
 
   <block wx:if="{{!confirmed}}">
     <radio-group bindchange="onTendencyChange">
-      <label class="option" wx:for="{{options}}" wx:key="value">
+      <label class="option card {{tendency === item.value ? 'selected' : ''}}" wx:for="{{options}}" wx:key="value">
         <radio value="{{item.value}}" checked="{{tendency === item.value}}" />
-        <text>{{item.label}}</text>
+        <view>
+          <view class="option-label">{{item.label}}</view>
+          <view class="option-note">{{item.value === 'none' ? '暂不投入也是有效决定' : '现场确认后再完成真实加入'}}</view>
+        </view>
       </label>
     </radio-group>
     <view class="hint" wx:if="{{error}}">{{error}}</view>
-    <button class="btn-primary" bindtap="onConfirm">确认选择</button>
+    <button class="btn-primary" bindtap="onConfirm">确认倾向，生成行动卡</button>
+    <button class="btn-secondary" bindtap="onAdjust">返回调整候选</button>
   </block>
 
   <block wx:else>
-    <view class="confirm-box">
+    <view class="confirm-box card">
+      <view class="confirm-kicker">你的当前结论</view>
       <view class="confirm-text">{{confirmText}}</view>
     </view>
-    <view class="exit-box">
-      <view class="exit-title">下一步在真实渠道完成</view>
-      <view class="exit-body">
-        请带着刚才的判断，再去摊位扫码或加入真实群聊。
-        本原型不提供扫码、加群或报名功能。
+
+    <view class="screenshot-hint">以下区域适合直接截图保存</view>
+    <view class="expectation-card" wx:for="{{expectationCards}}" wx:key="id">
+      <view class="expectation-head">
+        <view><view class="expectation-kicker">{{item.title}}</view><view class="expectation-name">{{item.name}}</view></view>
+        <view class="status">{{item.status}}</view>
+      </view>
+      <view class="expectation-line" wx:for="{{item.expectations}}" wx:for-item="expectation" wx:key="*this">
+        <text class="check">✓</text><text>{{expectation}}</text>
+      </view>
+      <view class="expectation-reminder">{{item.reminder}}</view>
+    </view>
+
+    <view class="questions card">
+      <view class="section-title">到摊位，优先问这 {{boothQuestions.length}} 题</view>
+      <view class="question" wx:for="{{boothQuestions}}" wx:key="question">
+        <view class="question-number">{{index + 1}}</view>
+        <view>{{item.question}}</view>
       </view>
     </view>
-    <button class="btn-secondary" bindtap="onRestart">重新比较</button>
+
+    <view class="exit-box">
+      <view class="exit-title">最后一步在线下完成</view>
+      <view class="exit-body">核实活动安排与职责后，再通过社团真实招新摊位、官方群聊或报名渠道加入。本工具不会代你报名。</view>
+    </view>
+    <button class="btn-primary" bindtap="onAdjust">返回调整</button>
+    <button class="btn-secondary" bindtap="onRestart">重新开始</button>
   </block>
 </view>

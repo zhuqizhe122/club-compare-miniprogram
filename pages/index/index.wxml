@@ -1,7 +1,27 @@
 <view class="page">
-  <view class="title">加入前先比一比</view>
-  <view class="lead">把 2–3 个候选社团放进同一张对照表，看清时间、活动和氛围后再决定是否加入。</view>
-  <view class="hint">本原型使用本地样例数据，不完成扫码加群。比较后请去摊位或真实群聊加入。</view>
-  <button class="btn-primary" bindtap="onStart">开始比较</button>
-  <button class="btn-secondary" bindtap="onStart">跳过说明，直接进入</button>
+  <view class="hero">
+    <view class="eyebrow">CLUB DECISION COMPASS</view>
+    <view class="hero-title">别只凭第一眼，<br />找到真正适合你的社团</view>
+    <view class="hero-lead">用四个偏好缩小范围，再把 2–3 个候选放在同一张表里。选择之前，先看清时间、投入与日常体验。</view>
+    <button class="btn-primary hero-action" bindtap="onStart">开始寻找适合我的社团</button>
+    <view class="privacy-note">全程本地计算 · 不登录 · 不保存你的选择</view>
+  </view>
+
+  <view class="value-section">
+    <view class="section-title">三步，把“好像不错”变成有依据的判断</view>
+    <view class="step card">
+      <view class="step-number">01</view>
+      <view><view class="step-title">先缩圈</view><view class="step-copy">回答 4 个轻量问题，得到 6 个值得进一步了解的候选。</view></view>
+    </view>
+    <view class="step card">
+      <view class="step-number">02</view>
+      <view><view class="step-title">再比较</view><view class="step-copy">按你的选择顺序，并排看投入、频率、职责和氛围。</view></view>
+    </view>
+    <view class="step card">
+      <view class="step-number">03</view>
+      <view><view class="step-title">去确认</view><view class="step-copy">带着预期卡和现场追问去摊位，不在信息不足时仓促加入。</view></view>
+    </view>
+  </view>
+
+  <view class="disclaimer">社团资料为原型演示级推测，均需向社团确认；本工具不代替招新现场的真实沟通。</view>
 </view>

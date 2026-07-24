@@ -6,10 +6,11 @@
     "pages/result/result"
   ],
   "window": {
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "加入前先比一比",
-    "navigationBarBackgroundColor": "#ffffff",
-    "backgroundColor": "#f7f7f7"
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "社团决策罗盘",
+    "navigationBarBackgroundColor": "#123c36",
+    "backgroundColor": "#f3f7f5",
+    "backgroundTextStyle": "dark"
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json",

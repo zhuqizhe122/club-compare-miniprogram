@@ -3,7 +3,7 @@
  * 社团名称取自用户提供的名单；其余介绍、时间投入、活动频率、
  * 成员职责和氛围均为非官方模拟信息，仅用于产品原型演示。
  */
-const clubs = [
+const baseClubs = [
   {
     id: 'yanhe-lecturers',
     name: '延河讲师团',
@@ -888,16 +888,172 @@ const clubs = [
   },
 ]
 
+const CATEGORY_LABELS = {
+  academic: '学术思辨',
+  arts: '文化艺术',
+  sports: '体育运动',
+  service: '公益实践',
+  technology: '科技创新',
+  international: '语言与国际交流',
+  interest: '兴趣生活',
+}
+
+const SPORTS_IDS = [
+  'd-play-skating', 'baseball-softball', 'ice-hockey', 'golf', 'skiing',
+  'kendo', 'jian-sheng', 'cheerleading', 'volleyball', 'table-tennis',
+  'floorball', 'wave-water-sports', 'billiards', 'taekwondo', 'sports-dance',
+  'tennis', 'swimming', 'badminton', 'rugby', 'referees', 'ultimate-frisbee',
+  'yoga', 'football', 'fitness',
+]
+const ARTS_IDS = [
+  'music-lovers', 'gongzhong-guqin', 'xinfengya-poetry', 'calligraphy-study',
+  'xiangsheng', 'free-dancers', 'film', 'musical-theatre', 'wenyuan-hanfu',
+  'magic-club', 'photography', 'zhuxuan-xiao', 'dizi-xiao-art', 'piano',
+  'classical-chinese-music', 'triple-r-rap', 'red-literature', 'english-drama',
+  'yousheng-dubbing', 'rainbow-weaving', 'family-letters', 'jinshixuan',
+  'writing-workshop',
+]
+const SERVICE_IDS = [
+  'stray-animal-home', 'red-ribbon-youth', 'xinyu', 'legal-aid',
+  'field-classroom', 'campus-building', 'rural-revitalization',
+]
+const TECHNOLOGY_IDS = [
+  'ai-study', 'digital-twin', 'math-modeling', 'statistical-survey',
+  'computer', 'smart-eldercare', 'tecc', 'blockchain', 'openharmony',
+  'mingli-innovation',
+]
+const INTERNATIONAL_IDS = [
+  'macao-youth-alliance', 'china-korea-exchange', 'sakura', 'global-studies',
+  'model-un', 'european-studies', 'english-debate', 'global-competence',
+]
+const INTEREST_IDS = [
+  'military-enthusiasts', 'dream-red-chamber', 'mingcha-tea', 'mystery',
+  'science-fiction', 'ziyouren', 'liminal-anime', 'mochen-board-games',
+  'vegetarian-culture', 'natural-history', 'xingyue-astronomy',
+  'no59-game-studies',
+]
+
+function contains(list, value) {
+  return list.indexOf(value) !== -1
+}
+
+function inferCategory(id) {
+  if (contains(SPORTS_IDS, id)) return 'sports'
+  if (contains(ARTS_IDS, id)) return 'arts'
+  if (contains(SERVICE_IDS, id)) return 'service'
+  if (contains(TECHNOLOGY_IDS, id)) return 'technology'
+  if (contains(INTERNATIONAL_IDS, id)) return 'international'
+  if (contains(INTEREST_IDS, id)) return 'interest'
+  return 'academic'
+}
+
+function inferIntensity(weeklyHours) {
+  const text = String(weeklyHours || '')
+  if (/4～|5小时|6小时|明显增加/.test(text)) return 'high'
+  if (/3～|2～4|2～3/.test(text)) return 'medium'
+  return 'low'
+}
+
+function inferSocialStyle(category, vibe) {
+  const text = String(vibe || '')
+  if (/表达|舞台|活跃|开放|互动|辩论|对抗/.test(text)) return 'expressive'
+  if (category === 'sports' || category === 'service' || /协作|配合|团队|互助/.test(text)) {
+    return 'collaborative'
+  }
+  return 'quiet'
+}
+
+function inferTimeBand(frequency) {
+  const text = String(frequency || '')
+  if (/出行|户外|观察|实践|赛事|赛季|雪季/.test(text)) return 'weekend'
+  if (/每周|训练|排练|合练/.test(text)) return 'weekday-evening'
+  return 'flexible'
+}
+
+function inferSkillBarrier(category, memberRole) {
+  const text = String(memberRole || '')
+  if (/基础|入门|学习|接受培训/.test(text)) return 'beginner'
+  if (category === 'technology' || /技术|编程|写作|研究|建模/.test(text)) return 'guided'
+  return 'beginner'
+}
+
+function inferCommitment(intensity, frequency) {
+  if (intensity === 'high') return 'project'
+  if (/每周|排班|项目期/.test(String(frequency || ''))) return 'regular'
+  return 'casual'
+}
+
+function makeTags(club, category, socialStyle) {
+  const tags = [CATEGORY_LABELS[category]]
+  if (socialStyle === 'quiet') tags.push('安静专注')
+  if (socialStyle === 'collaborative') tags.push('团队协作')
+  if (socialStyle === 'expressive') tags.push('表达互动')
+  if (/户外|出行|自然|水上|雪|观测/.test(club.tagline + club.frequency)) tags.push('户外体验')
+  if (/创作|写作|作品|设计/.test(club.tagline + club.memberRole)) tags.push('创作实践')
+  return tags
+}
+
+/**
+ * 以下结构化字段仅根据已有名称和原型文案作演示级归类。
+ * 它们不是社团官方信息，全部必须在招新现场向社团确认。
+ */
+const clubs = baseClubs.map((club) => {
+  const category = inferCategory(club.id)
+  const intensity = inferIntensity(club.weeklyHours)
+  const socialStyle = inferSocialStyle(category, club.vibe)
+  return Object.assign({}, club, {
+    category,
+    categoryLabel: CATEGORY_LABELS[category],
+    tags: makeTags(club, category, socialStyle),
+    searchAliases: [club.id, club.name.replace(/协会|社团|社|学会|俱乐部/g, '')],
+    timeBand: inferTimeBand(club.frequency),
+    intensity,
+    socialStyle,
+    skillBarrier: inferSkillBarrier(category, club.memberRole),
+    commitment: inferCommitment(intensity, club.frequency),
+    dataStatus: '待社团确认',
+  })
+})
+
 function getAllClubs() {
   return clubs
 }
 
 function getClubsByIds(ids) {
-  const set = {}
-  ;(ids || []).forEach((id) => {
-    set[id] = true
+  const byId = {}
+  const seen = {}
+  clubs.forEach((club) => {
+    byId[club.id] = club
   })
-  return clubs.filter((c) => set[c.id])
+  return (Array.isArray(ids) ? ids : []).reduce((result, id) => {
+    if (byId[id] && !seen[id]) {
+      result.push(byId[id])
+      seen[id] = true
+    }
+    return result
+  }, [])
+}
+
+function normalizeList(value) {
+  if (Array.isArray(value)) return value
+  if (value === null || value === undefined || value === '') return []
+  return [value]
+}
+
+function searchClubs(query, filters) {
+  const keyword = String(query || '').trim().toLowerCase()
+  const rules = filters || {}
+  return clubs.filter((club) => {
+    const searchable = [
+      club.name, club.tagline, club.categoryLabel, club.vibe,
+    ].concat(club.tags, club.searchAliases).join(' ').toLowerCase()
+    if (keyword && searchable.indexOf(keyword) === -1) return false
+    return ['category', 'timeBand', 'intensity', 'socialStyle', 'skillBarrier', 'commitment']
+      .every((key) => {
+        const accepted = normalizeList(rules[key])
+        return accepted.length === 0 || contains(accepted, club[key])
+      })
+  })
 }
 
 function displayField(value) {
@@ -907,8 +1063,83 @@ function displayField(value) {
   return value
 }
 
+const DIFFERENCE_FIELDS = [
+  { key: 'weeklyHours', label: '每周投入' },
+  { key: 'timeBand', label: '常见时段' },
+  { key: 'intensity', label: '投入强度' },
+  { key: 'socialStyle', label: '互动方式' },
+  { key: 'skillBarrier', label: '入门门槛' },
+  { key: 'commitment', label: '参与承诺' },
+]
+
+const STRUCTURED_LABELS = {
+  'weekday-evening': '工作日晚间',
+  weekend: '周末为主',
+  flexible: '灵活安排',
+  low: '轻量投入',
+  medium: '适中投入',
+  high: '较高投入',
+  quiet: '安静专注',
+  collaborative: '团队协作',
+  expressive: '表达互动',
+  beginner: '零基础可尝试',
+  guided: '建议跟随指导入门',
+  casual: '灵活参与',
+  regular: '需要稳定出席',
+  project: '项目期投入增加',
+}
+
+function displayStructured(value) {
+  return STRUCTURED_LABELS[value] || displayField(value)
+}
+
+function getDifferenceSummary(ids) {
+  const selected = Array.isArray(ids) && typeof ids[0] === 'object'
+    ? ids
+    : getClubsByIds(ids)
+  return DIFFERENCE_FIELDS.reduce((items, field) => {
+    const values = selected.map((club) => displayField(club[field.key]))
+    const unique = values.filter((value, index) => values.indexOf(value) === index)
+    if (unique.length > 1) {
+      items.push({
+        field: field.key,
+        label: field.label,
+        values: selected.map((club, index) => ({
+          id: club.id,
+          name: club.name,
+          value: values[index],
+        })),
+      })
+    }
+    return items
+  }, [])
+}
+
+function getExpectationCards(ids) {
+  const selected = Array.isArray(ids) && typeof ids[0] === 'object'
+    ? ids
+    : getClubsByIds(ids)
+  return selected.map((club) => ({
+    id: club.id,
+    name: club.name,
+    title: '加入前预期',
+    expectations: [
+      `投入：${displayField(club.weeklyHours)}，${displayStructured(club.commitment)}`,
+      `互动：${displayStructured(club.socialStyle)}；入门：${displayStructured(club.skillBarrier)}`,
+      `时段：${displayStructured(club.timeBand)}`,
+    ],
+    status: club.dataStatus,
+    reminder: '以上为演示级推测，请在招新摊位逐项确认。',
+  }))
+}
+
 module.exports = {
+  CATEGORY_LABELS,
   getAllClubs,
   getClubsByIds,
+  searchClubs,
   displayField,
+  displayStructured,
+  getDifferenceSummary,
+  getExpectationCards,
 }
