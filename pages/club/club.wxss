@@ -3,7 +3,7 @@
 .bar-card,
 .evidence-card {
   padding: 28rpx;
-  margin-bottom: 34rpx;
+  margin-bottom: 28rpx;
 }
 
 .hero-top {
@@ -15,12 +15,83 @@
 
 .hero .title {
   margin-top: 8rpx;
-  font-size: 40rpx;
+  font-size: 42rpx;
+}
+
+.verify-chip {
+  flex-shrink: 0;
+  padding: 8rpx 16rpx;
+  color: var(--brand-dark);
+  background: var(--mint);
+  border-radius: 999rpx;
+  font-size: 20rpx;
+  font-weight: 700;
 }
 
 .tag-row {
   display: flex;
   flex-wrap: wrap;
+  margin-bottom: 8rpx;
+}
+
+.gallery {
+  margin: 0 0 34rpx;
+  white-space: nowrap;
+}
+
+.gallery-track {
+  display: inline-flex;
+  gap: 16rpx;
+  padding-bottom: 4rpx;
+}
+
+.gallery-item {
+  width: 280rpx;
+  flex-shrink: 0;
+}
+
+.gallery-image,
+.gallery-placeholder {
+  width: 280rpx;
+  height: 200rpx;
+  border-radius: 20rpx;
+  overflow: hidden;
+}
+
+.gallery-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  color: #6f8f88;
+  background:
+    linear-gradient(135deg, rgba(8, 124, 107, 0.08), rgba(8, 124, 107, 0.02)),
+    repeating-linear-gradient(
+      -45deg,
+      #e8f1ee,
+      #e8f1ee 12rpx,
+      #f4faf8 12rpx,
+      #f4faf8 24rpx
+    );
+  border: 1px dashed var(--line-strong);
+}
+
+.gallery-placeholder-mark {
+  font-size: 22rpx;
+  font-weight: 800;
+  letter-spacing: 2rpx;
+}
+
+.gallery-placeholder-copy {
+  font-size: 22rpx;
+}
+
+.gallery-caption {
+  margin-top: 12rpx;
+  color: var(--ink-soft);
+  font-size: 22rpx;
+  white-space: normal;
 }
 
 .fact {
@@ -42,22 +113,9 @@
   font-weight: 650;
 }
 
-.evidence-line {
-  margin-bottom: 20rpx;
-}
-
 .source-title {
   margin-bottom: 10rpx;
   font-weight: 700;
-}
-
-.warning {
-  margin-top: 22rpx;
-  padding: 20rpx;
-  border-radius: 14rpx;
-  color: var(--warn);
-  background: var(--warn-bg);
-  font-size: 23rpx;
 }
 
 .missing {

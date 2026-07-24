@@ -43,7 +43,7 @@
   </view>
 
   <view class="boundary">
-    <view class="boundary-title">资料 D 级边界</view>
-    <view class="boundary-copy">当前社团画像主要来自原型推断，证据等级为 D：只能用于形成待核实的候选，不能证明实际招新安排、费用、选拔要求或活动体验。匹配分 ≠ 证据强度，更不等于官方评价。</view>
+    <view class="boundary-title">资料边界</view>
+    <view class="boundary-copy">当前社团信息为演示资料，只能用于形成待核实的候选，不能证明实际招新安排、费用、选拔要求或活动体验。匹配分不等于官方评价。</view>
   </view>
 </view>

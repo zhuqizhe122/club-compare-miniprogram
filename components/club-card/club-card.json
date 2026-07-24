@@ -1,6 +1,4 @@
 {
   "component": true,
-  "usingComponents": {
-    "evidence-badge": "/components/evidence-badge/evidence-badge"
-  }
+  "usingComponents": {}
 }

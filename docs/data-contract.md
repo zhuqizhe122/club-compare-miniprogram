@@ -16,6 +16,7 @@
 | `category` | string | 是 | 分类代码，见下方枚举 |
 | `categoryLabel` | string | 是 | 分类的中文显示名 |
 | `tags` | string[] | 是 | 用于搜索和快速浏览的演示标签 |
+| `images` | `{ src: string, caption: string, isPlaceholder: boolean }[]` | 是 | 活动图片；无真实资源时须提供 2–3 条占位项（`src` 可为空、`isPlaceholder: true`），供详情页与主倾向报告展示 |
 | `searchAliases` | string[] | 是 | 本地搜索别名，不作为显示名称 |
 | `timeBand` | string | 是 | 演示级常见时段分类 |
 | `intensity` | string | 是 | 演示级投入强度 |
@@ -255,7 +256,7 @@ evidence["decisionProfile.commitment.weeklyHoursMax"] = [
 - `selectedClubIds: string[]`：当前候选社团 ID；页面规则要求 2–3 个后才能比较。
 - `preferenceAnswers: Record<string, string>`：当前四题答案，键为 `category/timeBand/intensity/socialStyle`；未回答的键可缺失。
 - `recommendations: MatchResult[]`：当前 Top 6 匹配结果，供返回选择页时恢复；每项含 `club/score/reasons/trace/dataStatus`。
-- `tendency: 'club:<id>' | 'none' | null`：当前倾向。
+- `tendency: '<clubId>' | 'none' | null`：当前倾向；兼容旧值 `club:<id>`，读取时会规范化为社团 id。
 
 以上状态只存在当前小程序会话，不写入 Storage，不承诺关闭重开、跨设备或跨会话恢复。“重新开始”会清空四项状态。
 

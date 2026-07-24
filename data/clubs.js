@@ -1002,6 +1002,30 @@ function makeTags(club, category, socialStyle) {
  * 以下结构化字段仅根据已有名称和原型文案作演示级归类。
  * 它们不是社团官方信息，全部必须在招新现场向社团确认。
  */
+function normalizeImages(images) {
+  if (Array.isArray(images) && images.length) {
+    return images.slice(0, 6).map((item, index) => {
+      if (typeof item === 'string') {
+        return {
+          src: item,
+          caption: `活动图片 ${index + 1}`,
+          isPlaceholder: !item,
+        }
+      }
+      return {
+        src: item.src || '',
+        caption: item.caption || `活动图片 ${index + 1}`,
+        isPlaceholder: item.isPlaceholder !== false && !item.src,
+      }
+    })
+  }
+  return [
+    { src: '', caption: '活动现场示意（占位）', isPlaceholder: true },
+    { src: '', caption: '日常活动示意（占位）', isPlaceholder: true },
+    { src: '', caption: '成果展示示意（占位）', isPlaceholder: true },
+  ]
+}
+
 const clubs = baseClubs.map((club) => {
   const category = inferCategory(club.id)
   const intensity = inferIntensity(club.weeklyHours)
@@ -1010,6 +1034,7 @@ const clubs = baseClubs.map((club) => {
     category,
     categoryLabel: CATEGORY_LABELS[category],
     tags: makeTags(club, category, socialStyle),
+    images: normalizeImages(club.images),
     searchAliases: [club.id, club.name.replace(/协会|社团|社|学会|俱乐部/g, '')],
     timeBand: inferTimeBand(club.frequency),
     intensity,

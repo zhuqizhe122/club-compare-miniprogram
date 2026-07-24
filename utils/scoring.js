@@ -76,7 +76,7 @@ function evaluateHardConstraint(club, constraint, options) {
   if (records.some((record) => record.sourceType === 'prototype-inferred')) {
     return Object.assign(base, {
       result: 'UNKNOWN', reasonCode: 'PROTOTYPE_INFERRED',
-      reason: '该值仅为原型推断，即使表面相符也不能视为硬约束通过。',
+      reason: '该值尚未核实，即使表面相符也不能视为硬约束通过。',
     })
   }
   const eligible = records.some((record) => (

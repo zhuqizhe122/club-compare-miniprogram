@@ -64,7 +64,7 @@ function runStressTest(club, scenarioId, context) {
       scenarioLabel: scenario.label,
       requiredFieldPaths: scenario.requiredFieldPaths.slice(),
       evidenceIds, ruleId: scenario.ruleId,
-      reason: '必需字段缺失、冲突或只有原型推断，无法作可靠压力判断。',
+      reason: '必需字段缺失、冲突或尚未核实，无法作可靠压力判断。',
     }
   }
   const settings = context || {}
@@ -239,7 +239,7 @@ function compareClubs(clubs, options) {
         return
       }
       const confidence = records.reduce((best, record) => Math.max(best, GRADE_CONFIDENCE[record.grade] || 0), 0)
-      if (confidence <= 30) unknowns.push({ fieldPath, fieldLabel: fieldLabel(fieldPath), reason: '仅有低等级或原型推断证据' })
+      if (confidence <= 30) unknowns.push({ fieldPath, fieldLabel: fieldLabel(fieldPath), reason: '仅有低可靠度或演示资料' })
       else if (/Flexibility|autonomyLevel/.test(fieldPath) && (value === 'high' || value >= 3)) {
         strengths.push({ fieldPath, fieldLabel: fieldLabel(fieldPath), value })
       } else if (/Hours|Intensity|competitionLevel/.test(fieldPath) && Number(value) >= 3) {

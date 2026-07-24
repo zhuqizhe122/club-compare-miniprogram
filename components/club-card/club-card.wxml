@@ -1,28 +1,47 @@
 <view class="club-card {{selected ? 'selected' : ''}}">
-  <view class="topline">
-    <view class="identity">
-      <text wx:if="{{rank}}" class="rank">#{{rank}}</text>
-      <text class="name">{{club.name}}</text>
+  <view class="card-head">
+    <view class="thumb">
+      <text class="thumb-mark">{{club.name[0] || '社'}}</text>
     </view>
-    <view class="score-block">
-      <text class="score mono">{{score}}</text>
-      <text class="score-label">匹配分</text>
+    <view class="head-main">
+      <view class="topline">
+        <view class="identity">
+          <text wx:if="{{rank}}" class="rank">#{{rank}}</text>
+          <text class="name">{{club.name}}</text>
+        </view>
+        <view class="score-block" wx:if="{{showScore}}">
+          <text class="score mono">{{score}}</text>
+          <text class="score-label">匹配</text>
+        </view>
+      </view>
+      <view class="tagline">{{club.tagline}}</view>
+      <view class="meta">
+        <text class="chip">{{club.categoryLabel}}</text>
+        <text class="verify-chip">待核实</text>
+      </view>
     </view>
   </view>
-  <view class="tagline">{{club.tagline}}</view>
-  <view class="meta">
-    <text class="chip">{{club.categoryLabel}}</text>
-    <evidence-badge grade="{{evidenceGrade}}" text="证据" compact="{{true}}" />
-    <text class="evidence-copy">匹配分 ≠ 证据强度</text>
-  </view>
-  <view class="reasons">
+
+  <view class="reasons" wx:if="{{reasons.length || caution}}">
     <view wx:for="{{reasons}}" wx:key="*this" class="reason">
-      <text class="reason-mark">✓</text><text>{{item}}</text>
+      <text class="reason-mark">✓</text><text class="reason-text">{{item}}</text>
     </view>
     <view wx:if="{{caution}}" class="caution">
-      <text class="caution-mark">!</text><text>{{caution}}</text>
+      <text class="caution-mark">!</text><text class="reason-text">{{caution}}</text>
     </view>
   </view>
+
+  <view class="notes" wx:if="{{costText || unknownText}}">
+    <view class="note-row" wx:if="{{costText}}">
+      <text class="note-label cost-label">代价</text>
+      <text class="note-text">{{costText}}</text>
+    </view>
+    <view class="note-row" wx:if="{{unknownText}}">
+      <text class="note-label unknown-label">未知</text>
+      <text class="note-text">{{unknownText}}</text>
+    </view>
+  </view>
+
   <view class="actions">
     <button class="detail" bindtap="onDetail">查看详情</button>
     <button wx:if="{{selectable}}" class="select {{selected ? 'active' : ''}}" bindtap="onSelect">

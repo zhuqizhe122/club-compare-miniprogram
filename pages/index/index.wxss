@@ -4,6 +4,10 @@
 
 .hero {
   padding: 32rpx 6rpx 48rpx;
+  border-radius: 28rpx;
+  background:
+    radial-gradient(circle at top right, rgba(8, 124, 107, 0.12), transparent 42%),
+    linear-gradient(180deg, #f7fbf9 0%, transparent 70%);
 }
 
 .hero-title {

@@ -48,6 +48,14 @@ clubs.forEach((club) => {
   })
   assert.ok(Array.isArray(club.tags) && club.tags.length > 0, `${club.id}.tags 必须是非空数组`)
   assert.ok(Array.isArray(club.searchAliases) && club.searchAliases.length > 0, `${club.id}.searchAliases 必须是非空数组`)
+  assert.ok(Array.isArray(club.images) && club.images.length >= 2, `${club.id}.images 必须至少有 2 条活动图片或占位`)
+  club.images.forEach((image, index) => {
+    assert.ok(image && typeof image === 'object', `${club.id}.images[${index}] 必须是对象`)
+    assert.strictEqual(typeof image.caption, 'string', `${club.id}.images[${index}].caption 必须是字符串`)
+    assert.ok(image.caption.trim(), `${club.id}.images[${index}].caption 不得为空`)
+    assert.strictEqual(typeof image.isPlaceholder, 'boolean', `${club.id}.images[${index}].isPlaceholder 必须是布尔值`)
+    assert.ok(typeof image.src === 'string', `${club.id}.images[${index}].src 必须是字符串`)
+  })
   Object.keys(enums).forEach((field) => {
     assert.ok(enums[field].indexOf(club[field]) !== -1, `${club.id}.${field} 枚举无效`)
   })

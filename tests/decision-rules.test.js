@@ -72,17 +72,22 @@ cards.forEach((card) => {
 const missing = Object.assign({}, pair[0], { weeklyHours: '' })
 const questions = generateBoothQuestions([missing, pair[1]], {
   tendency: `club:${pair[1].id}`,
-  preference: answers,
+  answers: {
+    'core-hours': 4,
+    'core-conflict': ['weekday-evening'],
+    'core-entry': 'open-only',
+    'core-growth': ['skill', 'friendship'],
+  },
 })
-assert.ok(questions.length > 0 && questions.length <= 3)
-assert.strictEqual(questions[0].source, 'missing', '缺失信息应优先转成问题')
-assert.ok(questions.some((item) => item.source === 'difference'), '应覆盖候选差异')
-assert.ok(questions.some((item) => item.source === 'tendency'), '应覆盖当前倾向')
+assert.strictEqual(questions.length, 5, '有测评答案且确认主倾向时应生成 5 条')
+assert.ok(questions.every((item) => !item.clubId || item.clubId === pair[1].id), '问题必须围绕最终倾向社团')
+assert.ok(questions.some((item) => item.source === 'preference'), '应结合问卷答案生成问题')
+assert.ok(questions.some((item) => item.question.indexOf(pair[1].name) !== -1), '问题文案应点名主倾向社团')
 
-const fallbackQuestions = generateBoothQuestions([clubs[0], clubs[0]], {
+const fallbackQuestions = generateBoothQuestions([clubs[0], clubs[1]], {
   tendency: 'none',
-  preference: {},
+  answers: {},
 })
-assert.strictEqual(fallbackQuestions.length, 3, '存在候选时应补足 3 条现场问题')
+assert.strictEqual(fallbackQuestions.length, 3, '无测评答案时应补足 3 条现场问题')
 
 console.log('决策规则测试通过：搜索、顺序、差异、预期卡、Top 6 与摊位追问均有效。')

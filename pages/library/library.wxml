@@ -5,7 +5,7 @@
   <view class="result-meta">
     <text>共 {{total}} 个结果</text>
     <text wx:if="{{activeConditionCount}}"> · 已启用 {{activeConditionCount}} 个条件</text>
-    <text>。资料均为 D 级原型推断，请到招新现场核实。</text>
+    <text>。演示资料请到招新现场核实。</text>
   </view>
 
   <view class="search card">

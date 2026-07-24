@@ -11,17 +11,25 @@
 
   <block wx:elif="{{!confirmed}}">
     <radio-group bindchange="onTendencyChange">
-      <label class="option card {{tendency === item.value ? 'selected' : ''}}" wx:for="{{options}}" wx:key="value">
-        <radio value="{{item.value}}" checked="{{tendency === item.value}}" />
+      <label
+        class="option card {{tendency === item.value ? 'selected' : ''}}"
+        wx:for="{{options}}"
+        wx:key="value"
+        data-value="{{item.value}}"
+        bindtap="onPickTendency"
+      >
+        <radio value="{{item.value}}" checked="{{tendency === item.value}}" color="#087c6b" />
         <view>
           <view class="option-label">{{item.label}}</view>
           <view class="option-note">{{item.value === 'none' ? '暂不投入也是有效决定' : '现场确认后再完成真实加入'}}</view>
         </view>
       </label>
     </radio-group>
-    <view class="hint" wx:if="{{error}}">{{error}}</view>
-    <button class="btn-primary" bindtap="onConfirm">确认倾向，生成行动卡</button>
-    <button class="btn-secondary" bindtap="onAdjust">返回比较</button>
+    <view class="hint error-hint" wx:if="{{error}}">{{error}}</view>
+    <view class="action-stack">
+      <button class="btn-primary confirm-btn" bindtap="onConfirm">确认并生成行动卡</button>
+      <button class="btn-secondary" bindtap="onAdjust">返回比较</button>
+    </view>
   </block>
 
   <block wx:else>
@@ -79,9 +87,65 @@
       <view class="expectation-reminder">{{actionCard.reminder}}</view>
     </view>
 
+    <block wx:if="{{clubDetail}}">
+      <view class="detail-panel">
+        <view class="section-title">主倾向社团详情</view>
+        <view class="section-copy detail-lead">把简介、活动图片和关键安排放在一起，方便你带到招新现场核对。</view>
+
+        <view class="detail-hero card">
+          <view class="detail-hero-top">
+            <view>
+              <view class="eyebrow">{{clubDetail.categoryLabel}}</view>
+              <view class="detail-name">{{clubDetail.name}}</view>
+            </view>
+            <view class="verify-chip">待现场核实</view>
+          </view>
+          <view class="detail-tagline">{{clubDetail.tagline}}</view>
+          <view class="tag-row">
+            <text wx:for="{{clubDetail.tags}}" wx:key="*this" class="chip">{{item}}</text>
+          </view>
+        </view>
+
+        <view class="section-title soft">活动图片</view>
+        <scroll-view class="gallery" scroll-x show-scrollbar="{{false}}">
+          <view class="gallery-track">
+            <view class="gallery-item" wx:for="{{clubDetail.images}}" wx:key="caption">
+              <image wx:if="{{item.src && !item.isPlaceholder}}" class="gallery-image" src="{{item.src}}" mode="aspectFill" />
+              <view wx:else class="gallery-placeholder">
+                <text class="gallery-placeholder-mark">IMG</text>
+                <text class="gallery-placeholder-copy">图片占位</text>
+              </view>
+              <view class="gallery-caption">{{item.caption}}</view>
+            </view>
+          </view>
+        </scroll-view>
+
+        <view class="section-title soft">时间与参与</view>
+        <view class="detail-card card">
+          <view class="fact"><text class="fact-label">普通周</text><text>{{clubDetail.normalHours}}</text></view>
+          <view class="fact"><text class="fact-label">高峰周</text><text>{{clubDetail.peakHours}}</text></view>
+          <view class="fact"><text class="fact-label">常见时段</text><text>{{clubDetail.slotsText}}</text></view>
+          <view class="fact"><text class="fact-label">活动频率</text><text>{{clubDetail.frequency}}</text></view>
+          <view class="fact"><text class="fact-label">活动形式</text><text>{{clubDetail.modesText}}</text></view>
+          <view class="fact"><text class="fact-label">成长收益</text><text>{{clubDetail.benefitsText}}</text></view>
+          <view class="fact"><text class="fact-label">考勤弹性</text><text>{{clubDetail.flexibilityText}}；{{clubDetail.attendanceText}}</text></view>
+          <view class="fact"><text class="fact-label">投入模式</text><text>{{clubDetail.commitmentText}}</text></view>
+        </view>
+
+        <view class="section-title soft">加入条件与成本</view>
+        <view class="detail-card card">
+          <view class="fact"><text class="fact-label">入门方式</text><text>{{clubDetail.entryText}}</text></view>
+          <view class="fact"><text class="fact-label">是否选拔</text><text>{{clubDetail.selectionText}}</text></view>
+          <view class="fact"><text class="fact-label">费用估计</text><text>{{clubDetail.costText}}</text></view>
+          <view class="fact"><text class="fact-label">器材要求</text><text>{{clubDetail.equipmentText}}</text></view>
+          <view class="fact"><text class="fact-label">校外活动</text><text>{{clubDetail.offCampusText}}</text></view>
+        </view>
+      </view>
+    </block>
+
     <view class="questions card">
-      <view class="section-title">由比较洞察生成的 {{boothQuestions.length}} 个问题</view>
-      <view class="section-copy">问题优先覆盖硬条件未知、压力情境未知与低等级证据。</view>
+      <view class="section-title">{{questionTitle}}</view>
+      <view class="section-copy">{{questionLead}}</view>
       <view class="question" wx:for="{{boothQuestions}}" wx:key="question">
         <view class="question-number">{{index + 1}}</view>
         <view class="question-main">
@@ -100,7 +164,7 @@
     </view>
 
     <view class="evidence-notice">
-      <view class="evidence-notice-title">证据边界</view>
+      <view class="evidence-notice-title">资料边界</view>
       <view>{{evidenceNotice}}</view>
     </view>
 

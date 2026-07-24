@@ -55,7 +55,7 @@ const EVIDENCE_GRADES = [
   { value: 'A', label: 'A 级' },
   { value: 'B', label: 'B 级' },
   { value: 'C', label: 'C 级' },
-  { value: 'D', label: 'D 级原型推断' },
+  { value: 'D', label: 'D · 演示资料' },
   { value: 'U', label: 'U 未知' },
 ]
 

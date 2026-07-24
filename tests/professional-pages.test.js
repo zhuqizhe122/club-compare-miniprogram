@@ -17,6 +17,7 @@ global.wx = {
   reLaunch: (options) => navigation.push(options.url),
   navigateBack() {},
   showToast() {},
+  pageScrollTo() {},
   setNavigationBarTitle() {},
 }
 
@@ -130,11 +131,23 @@ assert.ok(compare.data.scenarioResult.ranking.every((item) => typeof item.deltaT
 
 const result = createContext(loadPage('pages/result/result.js'))
 result.onShow()
-result.data.tendency = `club:${clubs[0].id}`
+result.data.tendency = clubs[0].id
 result.onConfirm()
 assert.strictEqual(result.data.confirmed, true)
 assert.strictEqual(result.data.actionCard.id, clubs[0].id)
+assert.ok(result.data.clubDetail)
+assert.strictEqual(result.data.clubDetail.id, clubs[0].id)
+assert.ok(result.data.clubDetail.images.length >= 2)
+assert.ok(!/原型推断|D\s*级/.test(result.data.actionCard.scoreText || ''))
+assert.ok(!/原型推断|D\s*级/.test(result.data.evidenceNotice || ''))
 assert.ok(result.data.boothQuestions.length >= 3 && result.data.boothQuestions.length <= 5)
+assert.ok(result.data.boothQuestions.every((item) => (
+  !item.clubId || item.clubId === clubs[0].id
+)), '现场问题必须围绕最终主倾向社团')
+assert.ok(result.data.boothQuestions.some((item) => (
+  item.source === 'preference' || item.question.indexOf(clubs[0].name) !== -1
+)))
+assert.ok(result.data.questionTitle.indexOf(clubs[0].name) !== -1)
 assert.strictEqual(result.data.reviewStandards.length, 4)
 
 console.log('专业版页面状态测试通过：自适应问卷、分页、候选、压力比较与行动报告均有效。')

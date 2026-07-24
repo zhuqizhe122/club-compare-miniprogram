@@ -202,8 +202,14 @@ const insights = {
   stressTests: comparison.stressTests.slice(0, 2),
   unknowns: DECISION_FIELDS.slice(0, 2).map((field) => ({ clubId: sample.id, fieldPath: `decisionProfile.${field}` })),
 }
-const boothQuestions = generateBoothQuestions(clubs.slice(0, 2), { insights })
+const boothQuestions = generateBoothQuestions(clubs.slice(0, 2), {
+  insights,
+  tendency: `club:${sample.id}`,
+  answers: { 'core-hours': 4, 'core-entry': 'guided-ok' },
+})
 assert.ok(boothQuestions.length >= 3 && boothQuestions.length <= 5)
 assert.strictEqual(boothQuestions[0].source, 'hard-unknown')
+assert.ok(boothQuestions.every((item) => !item.clubId || item.clubId === sample.id))
+assert.ok(boothQuestions.some((item) => item.source === 'preference'))
 
 console.log('专业决策引擎测试通过：证据门禁、MCDA、自适应、比较、压力与追问均有效。')

@@ -11,9 +11,8 @@
 
   <block wx:else>
     <view class="evidence-reminder">
-      <view class="evidence-mark">D</view>
       <view>
-        <view class="evidence-title">当前主要是 D 级演示资料</view>
+        <view class="evidence-title">演示资料提醒</view>
         <view class="evidence-copy">分数、优势和代价用于演示决策方法；请在摊位核实时间、规则与门槛。</view>
       </view>
     </view>
@@ -33,8 +32,8 @@
       </view>
       <view class="summary-meta">
         <text>{{item.hardStatus}}</text>
-        <text>资料等级 D</text>
-        <text>原型推断，待现场核实</text>
+        <text>演示资料</text>
+        <text>待现场核实</text>
       </view>
       <view class="insight-grid">
         <view class="insight-block strength">
@@ -97,7 +96,7 @@
       >{{item.label}}</button>
     </view>
     <view class="scenario-panel card" wx:if="{{scenarioResult}}">
-      <view class="estimate-banner">D 级演示估计，非预测</view>
+      <view class="estimate-banner">演示估计，非预测</view>
       <view class="scenario-title">{{scenarioResult.label}}</view>
       <view class="scenario-reason">{{scenarioResult.reason}}</view>
       <view class="ranking-row" wx:for="{{scenarioResult.ranking}}" wx:key="clubId">

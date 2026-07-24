@@ -9,12 +9,14 @@ function bestEvidenceGrade(recommendation) {
 }
 
 function matchingReasons(recommendation) {
-  const reasons = recommendation.preference.reasons.slice(0, 2)
+  const reasons = recommendation.preference.reasons.slice(0, 2).map((item) => (
+    String(item).replace(/兼容度为\s*/g, '兼容 ')
+  ))
   if (reasons.length < 2 && recommendation.club.categoryLabel) {
-    reasons.push(`活动方向属于“${recommendation.club.categoryLabel}”，可作为偏好候选`)
+    reasons.push(`方向：${recommendation.club.categoryLabel}`)
   }
   if (reasons.length < 2) {
-    reasons.push(`综合偏好匹配分为 ${recommendation.score}，建议结合详情继续判断`)
+    reasons.push(`综合匹配 ${recommendation.score}`)
   }
   return reasons.slice(0, 2)
 }
@@ -38,10 +40,10 @@ function presentRecommendation(recommendation, index, selectedIds) {
     evidenceGrade: bestEvidenceGrade(recommendation),
     reasons: matchingReasons(recommendation),
     selected: selectedIds.indexOf(recommendation.clubId) !== -1,
-    costText: `时间代价：${recommendation.club.weeklyHours || '未提供'}；活动频率：${recommendation.club.frequency || '未提供'}`,
+    costText: `时间约 ${recommendation.club.weeklyHours || '未提供'} · ${recommendation.club.frequency || '频率待核实'}`,
     unknownText: unknowns.length
-      ? `待核实的硬条件：${unknowns.join('、')}`
-      : '当前硬条件未发现未知项，但 D 级原型资料仍需现场复核。',
+      ? `待核实：${unknowns.slice(0, 3).join('、')}`
+      : '硬条件暂无未知项，关键安排仍建议现场复核',
     caution: conflicts[0] || (unknowns.length ? `有 ${unknowns.length} 项硬条件尚不能判定` : ''),
   }
 }

@@ -5,7 +5,7 @@
         <view class="eyebrow">{{club.categoryLabel}}</view>
         <view class="title">{{club.name}}</view>
       </view>
-      <evidence-badge grade="D" text="字段证据" />
+      <view class="verify-chip">待现场核实</view>
     </view>
     <view class="lead">{{club.tagline}}</view>
     <view class="tag-row">
@@ -13,6 +13,20 @@
     </view>
     <button class="btn-primary" bindtap="onToggleSelection">{{selected ? '移除候选' : '加入候选'}}</button>
   </view>
+
+  <view class="section-title">活动图片</view>
+  <scroll-view class="gallery" scroll-x show-scrollbar="{{false}}">
+    <view class="gallery-track">
+      <view class="gallery-item" wx:for="{{club.images}}" wx:key="caption">
+        <image wx:if="{{item.src && !item.isPlaceholder}}" class="gallery-image" src="{{item.src}}" mode="aspectFill" />
+        <view wx:else class="gallery-placeholder">
+          <text class="gallery-placeholder-mark">IMG</text>
+          <text class="gallery-placeholder-copy">图片占位</text>
+        </view>
+        <view class="gallery-caption">{{item.caption}}</view>
+      </view>
+    </view>
+  </scroll-view>
 
   <view class="section-title">时间与参与</view>
   <view class="detail-card card">
@@ -40,12 +54,10 @@
     <dimension-bar wx:for="{{club.bars}}" wx:key="label" label="{{item.label}}" value="{{item.value}}" note="{{item.note}}" />
   </view>
 
-  <view class="section-title">证据与来源说明</view>
+  <view class="section-title">资料说明</view>
   <view class="evidence-card card">
-    <view class="evidence-line"><evidence-badge grade="D" text="原型推断" /></view>
-    <view class="source-title">来源类型：原型规则推断</view>
-    <view class="section-copy">依据旧版原型文案、社团名称和分类规则推断；没有官方链接、观察日期或核验日期，不能作为硬条件通过依据。</view>
-    <view class="warning">所有详情字段均为 D 级证据，仅用于缩小候选范围。费用、选拔、考勤和时段请向社团负责人逐项确认。</view>
+    <view class="source-title">演示资料，请现场确认</view>
+    <view class="section-copy">时间、费用、选拔和活动安排以本学期招新现场与社团负责人为准；本页内容仅供缩小候选范围。</view>
   </view>
 </view>
 

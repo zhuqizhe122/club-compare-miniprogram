@@ -22,7 +22,7 @@
       <view class="fact"><text>参与时长</text><text>{{item.durationText}}</text></view>
       <view class="fact"><text>时间投入</text><text>{{item.hoursText}}</text></view>
       <view class="fact"><text>高峰投入</text><text>{{item.peakText}}</text></view>
-      <view class="fact"><text>字段证据</text><text>D 级 · 原型规则推断</text></view>
+      <view class="fact"><text>字段证据</text><text>演示资料 · 待核实</text></view>
     </view>
     <view class="risk"><text class="risk-title">未解决风险</text>{{item.riskText}}</view>
     <button class="remove" data-id="{{item.id}}" bindtap="onRemove">移除此候选</button>

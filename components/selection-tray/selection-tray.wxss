@@ -1,0 +1,94 @@
+.tray {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  padding: 18rpx 28rpx calc(18rpx + env(safe-area-inset-bottom));
+  background: rgba(255, 255, 255, 0.96);
+  border-top: 1px solid #d8e2df;
+  box-shadow: 0 -10rpx 30rpx rgba(20, 47, 43, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.tray-copy {
+  display: flex;
+  align-items: baseline;
+  gap: 12rpx;
+}
+
+.count {
+  color: #087c6b;
+  font-size: 30rpx;
+  font-weight: 800;
+}
+
+.instruction {
+  color: #58706c;
+  font-size: 22rpx;
+}
+
+.selected-list {
+  margin-top: 12rpx;
+  white-space: nowrap;
+}
+
+.selected-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 12rpx;
+  min-height: 52rpx;
+}
+
+.selected-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10rpx;
+  max-width: 280rpx;
+  padding: 10rpx 16rpx;
+  color: #0b4e45;
+  background: #e8f4f0;
+  border-radius: 999rpx;
+  font-size: 22rpx;
+}
+
+.selected-chip text:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.remove {
+  flex-shrink: 0;
+  color: #58706c;
+  font-size: 28rpx;
+  line-height: 1;
+}
+
+.empty {
+  color: #8aa09b;
+  font-size: 22rpx;
+}
+
+.continue {
+  margin-top: 16rpx;
+  background: #087c6b;
+  color: #fff;
+  border-radius: 18rpx;
+  font-size: 28rpx;
+  font-weight: 650;
+  line-height: 84rpx;
+  min-height: 84rpx;
+  white-space: nowrap;
+  box-shadow: 0 10rpx 24rpx rgba(8, 124, 107, 0.18);
+}
+
+.continue[disabled] {
+  color: #fff;
+  background: #a9bdb8;
+  box-shadow: none;
+}
+
+.continue::after {
+  border: 0;
+}

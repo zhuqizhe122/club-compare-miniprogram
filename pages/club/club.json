@@ -1,7 +1,6 @@
 {
   "navigationBarTitleText": "社团详情",
   "usingComponents": {
-    "evidence-badge": "/components/evidence-badge/evidence-badge",
     "dimension-bar": "/components/dimension-bar/dimension-bar"
   }
 }

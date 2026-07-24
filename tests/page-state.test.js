@@ -18,6 +18,7 @@ global.wx = {
   navigateTo() {},
   reLaunch() {},
   showToast() {},
+  pageScrollTo() {},
 }
 
 function loadPage(relativePath) {
@@ -56,7 +57,7 @@ assert.ok(compare.data.columns.every((club) => club.matchReasons.length === 0))
 
 const result = createContext(loadPage('pages/result/result.js'))
 result.onShow()
-result.data.tendency = `club:${clubs[0].id}`
+result.data.tendency = clubs[0].id
 result.onConfirm()
 assert.strictEqual(result.data.confirmed, true)
 assert.strictEqual(result.data.boothQuestions.length, 3)
@@ -64,7 +65,7 @@ assert.ok(result.data.expectationCards[0].expectations.every((line) => !/\b(proj
 
 result.onShow()
 assert.strictEqual(result.data.confirmed, true, '页面再次 onShow 时必须恢复已确认行动卡')
-assert.strictEqual(result.data.tendency, `club:${clubs[0].id}`)
+assert.strictEqual(result.data.tendency, clubs[0].id)
 assert.strictEqual(result.data.boothQuestions.length, 3)
 
 console.log('页面状态测试通过：推荐失效、直接搜索、行动卡恢复与三条追问均有效。')

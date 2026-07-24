@@ -26,11 +26,12 @@ page {
 }
 
 .page-with-tray {
-  padding-bottom: calc(230rpx + env(safe-area-inset-bottom));
+  padding-bottom: calc(260rpx + env(safe-area-inset-bottom));
 }
 
 .btn-primary {
   margin-top: 32rpx;
+  padding: 0 28rpx;
   background: var(--brand);
   color: #fff;
   border-radius: 18rpx;
@@ -38,6 +39,8 @@ page {
   font-weight: 600;
   line-height: 92rpx;
   min-height: 92rpx;
+  white-space: nowrap;
+  box-sizing: border-box;
   box-shadow: 0 12rpx 28rpx rgba(8, 127, 112, 0.18);
 }
 

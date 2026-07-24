@@ -3,38 +3,26 @@
     <view class="header">
       <view class="eyebrow">YOUR TOP 6</view>
       <view class="title">更值得你先了解的 6 个候选</view>
-      <view class="lead">排序先考虑硬条件状态，再比较偏好匹配分。匹配分与证据等级是两个维度：高分不代表资料已被证实。</view>
-      <view class="grade-note">
-        <text class="grade">D</text>
-        <text>当前资料以原型推断为主，只能支持“去核实”，不能支持“已确认适合”。</text>
-      </view>
+      <view class="lead">先看硬条件状态，再看匹配分。分数只表示接近程度，不等于已现场证实。</view>
+      <view class="grade-note">演示资料仅支持“去核实”，不支持“已确认适合”。</view>
       <button class="edit-answer" bindtap="onEditAnswers">修改测评答案</button>
     </view>
 
     <view class="recommend-list">
-      <view wx:for="{{recommendations}}" wx:key="club.id" class="recommend-item">
-        <club-card
-          club="{{item.club}}"
-          rank="{{item.rank}}"
-          score="{{item.score}}"
-          evidence-grade="{{item.evidenceGrade}}"
-          selected="{{item.selected}}"
-          reasons="{{item.reasons}}"
-          caution="{{item.caution}}"
-          bindselect="onSelect"
-          binddetail="onDetail"
-        />
-        <view class="decision-notes">
-          <view class="note-row">
-            <text class="note-label cost-label">代价</text>
-            <text>{{item.costText}}</text>
-          </view>
-          <view class="note-row unknown-row">
-            <text class="note-label unknown-label">未知</text>
-            <text>{{item.unknownText}}</text>
-          </view>
-        </view>
-      </view>
+      <club-card
+        wx:for="{{recommendations}}"
+        wx:key="club.id"
+        club="{{item.club}}"
+        rank="{{item.rank}}"
+        score="{{item.score}}"
+        selected="{{item.selected}}"
+        reasons="{{item.reasons}}"
+        caution="{{item.caution}}"
+        cost-text="{{item.costText}}"
+        unknown-text="{{item.unknownText}}"
+        bindselect="onSelect"
+        binddetail="onDetail"
+      />
     </view>
   </block>
 
